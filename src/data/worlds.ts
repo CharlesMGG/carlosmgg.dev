@@ -21,6 +21,13 @@ export type WorldLesson = {
   body: L<string>;
 };
 
+export type WorldScreen = {
+  src: string;
+  width: number;
+  height: number;
+  alt: L<string>;
+};
+
 /** Capa 2 — el descenso: problema, decisiones con alternativa, y qué salió mal */
 export type WorldStudy = {
   role: L<string>;
@@ -30,6 +37,7 @@ export type WorldStudy = {
   problem: L<string[]>;
   decisions: WorldDecision[];
   wentWrong: WorldLesson[];
+  screens?: WorldScreen[];
 };
 
 export type World = {
@@ -582,6 +590,44 @@ export const worlds: World[] = [
           body: {
             es: "El panel de DNS confirmó el registro; los nameservers autoritativos respondían NXDOMAIN. Verificar con dig contra el autoritativo — no contra el caché — se volvió el paso obligado de cada alta de dominio.",
             en: "The DNS panel confirmed the record; the authoritative nameservers answered NXDOMAIN. Verifying with dig against the authoritative server — not the cache — became the mandatory step of every domain setup.",
+          },
+        },
+      ],
+      screens: [
+        {
+          src: "/screens/producto-de-venta/alvin-hero.png",
+          width: 1440,
+          height: 900,
+          alt: {
+            es: "Hero de la landing: 'Línea blanca al mayoreo, sin intermediarios' sobre fondo oscuro con ilustración line-art de un refrigerador",
+            en: "Landing hero: wholesale white goods headline on a dark background with a line-art refrigerator illustration",
+          },
+        },
+        {
+          src: "/screens/producto-de-venta/alvin-catalogo.png",
+          width: 1440,
+          height: 900,
+          alt: {
+            es: "Catálogo con filtros por categoría y tarjetas de producto con ilustraciones propias y especificaciones",
+            en: "Catalog with category filters and product cards featuring original illustrations and specs",
+          },
+        },
+        {
+          src: "/screens/producto-de-venta/alvin-cotizador.png",
+          width: 1440,
+          height: 900,
+          alt: {
+            es: "Drawer del cotizador: productos con cantidades, formulario de contacto y resumen antes de solicitar",
+            en: "Quote drawer: products with quantities, contact form and summary before submitting",
+          },
+        },
+        {
+          src: "/screens/producto-de-venta/alvin-mobile-hero.png",
+          width: 390,
+          height: 844,
+          alt: {
+            es: "Versión móvil de la landing",
+            en: "Mobile version of the landing page",
           },
         },
       ],

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale, getDictionary } from "@/i18n";
@@ -223,9 +224,46 @@ export default async function WorldPage({
           </Reveal>
 
           <Reveal delay={0.3}>
-            <p className="mt-14 rounded-2xl border border-dashed border-white/10 p-6 text-center font-mono text-xs text-mist">
-              {dict.study.screenshotsSoon}
-            </p>
+            {study.screens && study.screens.length > 0 ? (
+              <section className="mt-14">
+                <h2 className="font-mono text-xs uppercase tracking-[0.3em] text-gold">
+                  04 · {dict.study.screens}
+                </h2>
+                <div className="mt-6 grid gap-5 sm:grid-cols-2">
+                  {study.screens.map((screen) => {
+                    const portrait = screen.height > screen.width;
+                    return (
+                      <figure
+                        key={screen.src}
+                        className={
+                          portrait
+                            ? "mx-auto w-full max-w-[280px] sm:col-span-2"
+                            : "sm:col-span-2"
+                        }
+                      >
+                        <div className="glass overflow-hidden rounded-2xl p-1.5">
+                          <Image
+                            src={screen.src}
+                            width={screen.width}
+                            height={screen.height}
+                            alt={screen.alt[locale]}
+                            className="h-auto w-full rounded-xl"
+                            sizes={portrait ? "280px" : "(min-width: 1024px) 896px, 100vw"}
+                          />
+                        </div>
+                        <figcaption className="mt-2 px-1 font-mono text-[11px] leading-snug text-mist">
+                          {screen.alt[locale]}
+                        </figcaption>
+                      </figure>
+                    );
+                  })}
+                </div>
+              </section>
+            ) : (
+              <p className="mt-14 rounded-2xl border border-dashed border-white/10 p-6 text-center font-mono text-xs text-mist">
+                {dict.study.screenshotsSoon}
+              </p>
+            )}
           </Reveal>
         </>
       )}

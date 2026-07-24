@@ -33,6 +33,7 @@ export type Dictionary = {
     alternative: string;
     because: string;
     wentWrong: string;
+    screens: string;
     screenshotsSoon: string;
   };
   notes: {
