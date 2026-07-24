@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Sora, Inter, IBM_Plex_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
+import { Analytics } from "@vercel/analytics/next";
 import { locales, isLocale, getDictionary, type Locale } from "@/i18n";
 import { CommandMenu } from "@/components/chrome/CommandMenu";
 import { LocaleSwitch } from "@/components/chrome/LocaleSwitch";
@@ -40,6 +41,14 @@ export async function generateMetadata({
     alternates: {
       languages: { es: "/es", en: "/en" },
     },
+    openGraph: {
+      type: "website",
+      siteName: SITE.name,
+      locale: locale === "es" ? "es_MX" : "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+    },
   };
 }
 
@@ -58,6 +67,24 @@ export default async function LocaleLayout({
   const { locale } = await params;
   if (!isLocale(locale)) notFound();
   const dict = getDictionary(locale as Locale);
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: SITE.name,
+    jobTitle: locale === "es" ? "Desarrollador Full-Stack" : "Full-Stack Developer",
+    url: SITE.domain,
+    email: `mailto:${SITE.email}`,
+    sameAs: [SITE.github, SITE.linkedin],
+    knowsAbout: [
+      "Next.js",
+      "TypeScript",
+      "PostgreSQL",
+      "Supabase",
+      "Swift",
+      "SaaS multi-tenant",
+    ],
+  };
 
   return (
     <html
@@ -80,6 +107,11 @@ export default async function LocaleLayout({
           <Footer footer={dict.footer} />
         </div>
         <CommandMenu locale={locale} nav={dict.nav} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <Analytics />
       </body>
     </html>
   );
