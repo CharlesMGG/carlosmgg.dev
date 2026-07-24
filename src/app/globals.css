@@ -1,26 +1,77 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-display: var(--font-sora);
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-plex);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@theme {
+  /* Base — navy abyss */
+  --color-abyss: #060b1a;
+  --color-night: #0e1633;
+  --color-veil: #131d3f;
+
+  /* Text */
+  --color-ink: #f2f4f8;
+  --color-mist: #96a1bc;
+
+  /* Gold accent */
+  --color-gold: #e8c77a;
+  --color-gold-soft: #f5dfa6;
+
+  /* Stained-glass jewels */
+  --color-jewel-sapphire: #1e3a8a;
+  --color-jewel-amethyst: #7c3aed;
+  --color-jewel-tide: #0ea5a4;
+  --color-jewel-rose: #c026d3;
+}
+
+html {
+  color-scheme: dark;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-abyss);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 70% -10%, rgb(30 58 138 / 0.28), transparent 60%),
+    radial-gradient(ellipse 60% 50% at 15% 110%, rgb(124 58 237 / 0.14), transparent 60%),
+    linear-gradient(180deg, var(--color-abyss), var(--color-night));
+  background-attachment: fixed;
+  color: var(--color-ink);
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: rgb(232 199 122 / 0.85);
+  color: #060b1a;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
+}
+
+@layer components {
+  /* KH III command-menu glass: translucent navy + 1px edge of light */
+  .glass {
+    background: rgb(19 29 63 / 0.55);
+    -webkit-backdrop-filter: blur(14px) saturate(1.3);
+    backdrop-filter: blur(14px) saturate(1.3);
+    border: 1px solid rgb(232 199 122 / 0.16);
+    box-shadow:
+      inset 0 1px 0 rgb(242 244 248 / 0.07),
+      0 8px 32px rgb(2 6 18 / 0.55);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
