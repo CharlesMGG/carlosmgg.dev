@@ -217,6 +217,119 @@ export const worlds: World[] = [
         label: { es: "evidencia de entrega", en: "delivery evidence" },
       },
     ],
+    study: {
+      role: {
+        es: "Portal operador web móvil + app iOS nativa — único desarrollador",
+        en: "Mobile-web courier portal + native iOS app — sole developer",
+      },
+      period: { es: "2025 — hoy", en: "2025 — present" },
+      status: { es: "En producción · App Store", en: "In production · App Store" },
+      stack: [
+        "Swift / SwiftUI",
+        "Xcode · TestFlight",
+        "Next.js (portal móvil)",
+        "Supabase",
+        "Web APIs — cámara · GPS · canvas",
+      ],
+      problem: {
+        es: [
+          "La entrega real sucede en la calle: operadores con prisa, sol directo en la pantalla, camiones con cientos de paquetes y cobertura de red intermitente. Cada entrega tenía que quedar probada — quién recibió, dónde y a qué hora, con firma, GPS y foto — sin frenar el ritmo del operador.",
+          "Se construyó dos veces a propósito: un portal web móvil y una app iOS nativa en Swift/SwiftUI, porque la operación no podía esperar la revisión del App Store para cada ajuste de flujo.",
+        ],
+        en: [
+          "Real delivery happens on the street: couriers in a hurry, direct sun on the screen, trucks with hundreds of packages and spotty network coverage. Every delivery had to be proven — who received it, where and when, with signature, GPS and photo — without slowing the courier down.",
+          "It was deliberately built twice: a mobile-web portal and a native iOS app in Swift/SwiftUI, because the operation couldn't wait for App Store review on every flow adjustment.",
+        ],
+      },
+      decisions: [
+        {
+          title: {
+            es: "Una firma por parada, no por paquete",
+            en: "One signature per stop, not per package",
+          },
+          choice: {
+            es: "Escaneo continuo de todos los paquetes de una parada y una sola firma al final, confirmada en una transacción.",
+            en: "Continuous scanning of every package at a stop and a single signature at the end, confirmed in one transaction.",
+          },
+          alternative: {
+            es: "Capturar firma paquete por paquete.",
+            en: "Capturing a signature package by package.",
+          },
+          reason: {
+            es: "Una parada real baja decenas de paquetes. Firmar cada uno convertía 2 minutos en 20; el grupo con firma única conserva la evidencia y respeta el ritmo de la calle.",
+            en: "A real stop unloads dozens of packages. Signing each one turned 2 minutes into 20; the group with a single signature keeps the evidence and respects the street's pace.",
+          },
+        },
+        {
+          title: {
+            es: "Web móvil primero, iOS en paralelo",
+            en: "Mobile web first, iOS in parallel",
+          },
+          choice: {
+            es: "El portal del operador vive en el navegador del teléfono; la app nativa suma lo que el navegador no da.",
+            en: "The courier portal lives in the phone's browser; the native app adds what the browser can't.",
+          },
+          alternative: {
+            es: "Solo app nativa.",
+            en: "Native app only.",
+          },
+          reason: {
+            es: "Cada iteración vía App Store tarda días; el portal web despliega en minutos. La operación estrena flujos en web y la app los consolida.",
+            en: "Each App Store iteration takes days; the web portal deploys in minutes. The operation pilots flows on web and the app consolidates them.",
+          },
+        },
+        {
+          title: {
+            es: "El escáner tolera el mundo real",
+            en: "The scanner tolerates the real world",
+          },
+          choice: {
+            es: "Lector multiformato (QR + CODE128) con normalización de todo lo escaneado antes de buscar.",
+            en: "Multi-format reader (QR + CODE128) that normalizes everything scanned before looking it up.",
+          },
+          alternative: {
+            es: "Aceptar un solo formato “correcto”.",
+            en: "Accepting a single “correct” format.",
+          },
+          reason: {
+            es: "En campo aparecieron pistolas de escaneo con layout de teclado latino que convertían guiones en apóstrofes, y códigos de caja que no eran el de la guía. El software absorbe el ruido y guía al operador — no al revés.",
+            en: "The field produced scan guns with Latin keyboard layouts that turned hyphens into apostrophes, and box barcodes that weren't the waybill's. The software absorbs the noise and guides the courier — not the other way around.",
+          },
+        },
+      ],
+      wentWrong: [
+        {
+          title: {
+            es: "El código equivocado también escanea",
+            en: "The wrong barcode also scans",
+          },
+          body: {
+            es: "Los operadores reportaban “la guía no existe”. El backend estaba sano: escaneaban el código de barras grande de la caja de empaque, no el de la etiqueta. El fix no fue técnico sino de mensajes — el error ahora explica exactamente qué código buscar. A veces el bug solo se ve en la foto que nadie había pedido.",
+            en: "Couriers kept reporting “this waybill doesn't exist”. The backend was healthy: they were scanning the big barcode on the packing box, not the label's. The fix wasn't technical but message design — the error now explains exactly which code to look for. Sometimes the bug is only visible in the photo nobody had asked for.",
+          },
+        },
+        {
+          title: {
+            es: "La carga desaparecía al cruzar la medianoche",
+            en: "The load vanished at midnight",
+          },
+          body: {
+            es: "Aceptar carga un día y entregar al siguiente vaciaba la lista del operador: el filtro amarraba la carga al calendario, no al camión. La data nunca se perdió, pero el operador no la veía. Hoy la carga sigue al camión hasta entregarse, sin importar la fecha.",
+            en: "Accepting a load one day and delivering the next emptied the courier's list: the filter tied the load to the calendar, not the truck. No data was ever lost, but the courier couldn't see it. The load now follows the truck until delivered, regardless of the date.",
+          },
+        },
+        {
+          title: {
+            es: "El escáner “lento” que no era el escáner",
+            en: "The “slow” scanner that wasn't the scanner",
+          },
+          body: {
+            es: "El escaneo se sentía lento y la cámara leía al instante: el costo real estaba en round-trips en serie al servidor y en una UI que bloqueaba el siguiente escaneo. Instrumenté cada segmento antes de optimizar nada. La cámara era inocente.",
+            en: "Scanning felt slow while the camera read instantly: the real cost was serial server round-trips and a UI that blocked the next scan. I instrumented every segment before optimizing anything. The camera was innocent.",
+          },
+        },
+      ],
+    },
   },
   {
     slug: "precios-y-wallet",
@@ -244,6 +357,111 @@ export const worlds: World[] = [
         label: { es: "precios cost-plus + overrides", en: "cost-plus pricing + overrides" },
       },
     ],
+    study: {
+      role: {
+        es: "Diseño y desarrollo del SaaS desde cero — único desarrollador",
+        en: "SaaS design and development from scratch — sole developer",
+      },
+      period: { es: "2026 — en curso", en: "2026 — ongoing" },
+      status: {
+        es: "En construcción — fundaciones listas",
+        en: "In progress — foundations built",
+      },
+      stack: [
+        "Next.js (App Router)",
+        "TypeScript",
+        "Supabase — PostgreSQL · RLS · PL/pgSQL",
+        "Vitest",
+      ],
+      problem: {
+        es: [
+          "Un revendedor de guías de envío opera con saldo: el cliente recarga dinero, genera guías de varias paqueterías y cada guía descuenta según su lista de precios. Todo el negocio es, en el fondo, un libro contable — y un libro contable no puede estar “casi” bien.",
+          "El sistema es multi-tenant por subdominio con marca propia por revendedor, precios en cascada por nivel y un catálogo de 157 mil códigos postales para cotizar sin fricción.",
+        ],
+        en: [
+          "A shipping-label reseller runs on balance: clients top up money, generate labels across multiple carriers, and each label deducts according to their price list. The whole business is, at its core, a ledger — and a ledger can't be “almost” right.",
+          "The system is multi-tenant by subdomain with per-reseller branding, cascading tiered pricing, and a 157k postal-code catalog for frictionless quoting.",
+        ],
+      },
+      decisions: [
+        {
+          title: {
+            es: "El dinero es un ledger, no un campo",
+            en: "Money is a ledger, not a column",
+          },
+          choice: {
+            es: "El saldo es la suma de un ledger append-only; nada actualiza “balance” directamente y toda operación de dinero es un RPC idempotente.",
+            en: "Balance is the sum of an append-only ledger; nothing updates a “balance” column directly and every money operation is an idempotent RPC.",
+          },
+          alternative: {
+            es: "Una columna de saldo que se incrementa y decrementa.",
+            en: "A balance column that gets incremented and decremented.",
+          },
+          reason: {
+            es: "Un doble clic o un reintento de red no pueden cobrar dos veces: la idempotencia por llave de operación lo garantiza en la base. Y el historial es la fuente de la verdad — auditable por construcción.",
+            en: "A double click or a network retry must not charge twice: idempotency by operation key guarantees it at the database. And the history is the source of truth — auditable by construction.",
+          },
+        },
+        {
+          title: {
+            es: "Los precios se resuelven en cascada",
+            en: "Prices resolve as a cascade",
+          },
+          choice: {
+            es: "Precio base por paquetería → margen del tenant → overrides puntuales, resuelto en una sola función.",
+            en: "Base carrier price → tenant markup → targeted overrides, resolved in a single function.",
+          },
+          alternative: {
+            es: "Una lista plana de precios por cliente.",
+            en: "A flat price list per client.",
+          },
+          reason: {
+            es: "Las listas reales de los revendedores son excepciones sobre excepciones. La cascada modela cómo piensan: “todo al 20%, menos este cliente, menos esta ruta”.",
+            en: "Resellers' real price lists are exceptions on top of exceptions. The cascade models how they think: “everything at 20%, except this client, except this route”.",
+          },
+        },
+        {
+          title: {
+            es: "Aislamiento probado, no prometido",
+            en: "Isolation proven, not promised",
+          },
+          choice: {
+            es: "Una suite de tests que intenta cruzar datos entre tenants, corrida en cada cambio.",
+            en: "A test suite that actively tries to cross data between tenants, run on every change.",
+          },
+          alternative: {
+            es: "Confiar en el review manual de las policies.",
+            en: "Trusting manual review of the policies.",
+          },
+          reason: {
+            es: "En multi-tenant el bug catastrófico es silencioso. El test que intenta romper el aislamiento convierte “debería estar bien” en verde o rojo — y esa suite atrapó una escalación de privilegios real antes de producción.",
+            en: "In multi-tenant, the catastrophic bug is silent. A test that tries to break isolation turns “it should be fine” into green or red — and that suite caught a real privilege escalation before production.",
+          },
+        },
+      ],
+      wentWrong: [
+        {
+          title: {
+            es: "El perfil que podía ascenderse a sí mismo",
+            en: "The profile that could promote itself",
+          },
+          body: {
+            es: "Una policy de UPDATE permitía a un usuario editar su propio perfil — incluyendo su rol. Auto-promoción a dueño de la cuenta en un request. La atrapó la suite de aislamiento, no un review: los ojos leen la intención; los tests leen lo que la policy realmente permite.",
+            en: "An UPDATE policy let a user edit their own profile — including their role. Self-promotion to account owner in one request. The isolation suite caught it, not a review: eyes read intent; tests read what the policy actually allows.",
+          },
+        },
+        {
+          title: {
+            es: "La competencia también enseña — qué no hacer",
+            en: "Competitors teach too — what not to do",
+          },
+          body: {
+            es: "Antes de construir, analicé la plataforma que el cliente ya rentaba: campos que aceptan HTML libre, tokens de sesión en localStorage, identificadores con emojis. Cada hallazgo se volvió un requisito inverso — sesión en cookies del lado del servidor, CSP estricta, entradas saneadas. Estudiar el sistema a reemplazar es levantamiento de requisitos gratis.",
+            en: "Before building, I analyzed the platform the client was already renting: fields accepting free-form HTML, session tokens in localStorage, identifiers with emojis. Every finding became an inverse requirement — server-side session cookies, strict CSP, sanitized inputs. Studying the system you're replacing is free requirements gathering.",
+          },
+        },
+      ],
+    },
   },
   {
     slug: "producto-de-venta",
@@ -271,6 +489,103 @@ export const worlds: World[] = [
         label: { es: "catálogo ilustrado a mano", en: "hand-illustrated catalog" },
       },
     ],
+    study: {
+      role: {
+        es: "Diseño, desarrollo y puesta en vivo — único desarrollador",
+        en: "Design, development and launch — sole developer",
+      },
+      period: { es: "2026", en: "2026" },
+      status: { es: "En producción", en: "In production" },
+      stack: ["Next.js", "Tailwind CSS v4", "Resend", "Vercel", "Cloudflare"],
+      problem: {
+        es: [
+          "Un mayorista de línea blanca necesitaba enseñar producto y recibir solicitudes reales antes de tener “producto final”: una landing con cara de marca, catálogo navegable y un cotizador tipo carrito que convirtiera la visita en un correo accionable para ventas.",
+          "Las restricciones: salir bajo el dominio del cliente sin tocar su correo corporativo, sin fotos oficiales de marcas (licencias), y con costo de infraestructura cero mientras la venta se cierra.",
+        ],
+        en: [
+          "A white-goods wholesaler needed to show product and receive real requests before having a “final product”: a landing page with brand presence, a browsable catalog, and a cart-style quote builder that turns a visit into an actionable email for sales.",
+          "The constraints: launch under the client's domain without touching their corporate email, no official brand photos (licensing), and zero infrastructure cost while the sale closes.",
+        ],
+      },
+      decisions: [
+        {
+          title: {
+            es: "Ilustraciones propias en vez de fotos",
+            en: "Original illustrations instead of photos",
+          },
+          choice: {
+            es: "Catálogo completo con ilustraciones SVG line-art dibujadas para el proyecto.",
+            en: "A full catalog of SVG line-art illustrations drawn for the project.",
+          },
+          alternative: {
+            es: "Fotos oficiales de producto o banco de imágenes.",
+            en: "Official product photos or stock imagery.",
+          },
+          reason: {
+            es: "Las fotos oficiales traen riesgo legal y el stock huele a plantilla. El line-art es coherente, pesa casi nada y de paso demuestra el sistema visual.",
+            en: "Official photos carry legal risk and stock smells like a template. Line-art is coherent, weighs almost nothing, and doubles as proof of the visual system.",
+          },
+        },
+        {
+          title: {
+            es: "El cotizador es un carrito sin precios",
+            en: "The quote builder is a cart without prices",
+          },
+          choice: {
+            es: "Cantidades por producto y marca, resumen flotante y un solo formulario al final.",
+            en: "Quantities per product and brand, a floating summary, and a single form at the end.",
+          },
+          alternative: {
+            es: "Un formulario de contacto plano.",
+            en: "A flat contact form.",
+          },
+          reason: {
+            es: "En mayoreo el precio depende del volumen: capturar cantidades es exactamente el dato que el vendedor necesita para contestar con números en lugar de preguntas.",
+            en: "In wholesale, price depends on volume: capturing quantities is exactly the data the seller needs to reply with numbers instead of questions.",
+          },
+        },
+        {
+          title: {
+            es: "Sin backend hasta que hubo venta que atender",
+            en: "No backend until there was a sale to serve",
+          },
+          choice: {
+            es: "Todo estático más una única server action para el correo, activada por variables de entorno.",
+            en: "Everything static plus a single server action for email, switched on by environment variables.",
+          },
+          alternative: {
+            es: "Backend completo desde el día uno.",
+            en: "A full backend from day one.",
+          },
+          reason: {
+            es: "Infraestructura antes de la venta es costo sin cliente. La única pieza con estado — el envío del correo — quedó detrás de un interruptor.",
+            en: "Infrastructure before the sale is cost without a client. The only stateful piece — sending the email — sat behind a switch.",
+          },
+        },
+      ],
+      wentWrong: [
+        {
+          title: {
+            es: "La cotización que nadie recibió",
+            en: "The quote nobody received",
+          },
+          body: {
+            es: "El envío de correo caía a “modo demo” si faltaban las variables de entorno: pantalla de éxito, folio generado — y nada guardado en ningún lado. Una cotización real de un prospecto se perdió para siempre. La regla que quedó: un sistema sin sus llaves no finge; se declara fuera de servicio y muestra el contacto directo.",
+            en: "Email delivery fell back to “demo mode” if environment variables were missing: success screen, generated folio — and nothing stored anywhere. A real prospect's quote was lost forever. The rule that stuck: a system without its keys doesn't pretend; it declares itself out of service and shows direct contact.",
+          },
+        },
+        {
+          title: {
+            es: "El CNAME que se guardó sin guardarse",
+            en: "The CNAME that saved without saving",
+          },
+          body: {
+            es: "El panel de DNS confirmó el registro; los nameservers autoritativos respondían NXDOMAIN. Verificar con dig contra el autoritativo — no contra el caché — se volvió el paso obligado de cada alta de dominio.",
+            en: "The DNS panel confirmed the record; the authoritative nameservers answered NXDOMAIN. Verifying with dig against the authoritative server — not the cache — became the mandatory step of every domain setup.",
+          },
+        },
+      ],
+    },
   },
   {
     slug: "taller",
@@ -298,6 +613,103 @@ export const worlds: World[] = [
         label: { es: "decisiones por escrito", en: "decisions in writing" },
       },
     ],
+    study: {
+      role: {
+        es: "Identidad visual, documentación y método",
+        en: "Visual identity, documentation and method",
+      },
+      period: { es: "2025 — hoy", en: "2025 — present" },
+      status: { es: "Siempre en curso", en: "Always in progress" },
+      stack: ["Figma", "SVG", "Obsidian", "Playwright", "reportlab"],
+      problem: {
+        es: [
+          "Un producto también necesita marca, manuales y memoria. El Taller es el trabajo que no es feature: el sistema de identidad — logo vectorizado en 7 variantes light/dark, de Figma a SVG limpio —, los manuales de uso en PDF, y una bitácora de ingeniería donde cada error de producción queda con causa raíz y prevención.",
+          "La regla del taller: si dolió, se documenta; si se decidió, se escribe el porqué. El costo de no recordar es repetir.",
+        ],
+        en: [
+          "A product also needs a brand, manuals and memory. The Workshop is the work that isn't a feature: the identity system — a logo vectorized into 7 light/dark variants, from Figma to clean SVG —, PDF user manuals, and an engineering log where every production error gets a root cause and a prevention.",
+          "The workshop's rule: if it hurt, it gets documented; if it was decided, the why gets written down. The cost of not remembering is repeating.",
+        ],
+      },
+      decisions: [
+        {
+          title: {
+            es: "SVG limpio o no sale",
+            en: "Clean SVG or it doesn't ship",
+          },
+          choice: {
+            es: "Todo logo se exporta con textos convertidos a paths, gradientes sin canal alfa y validación en navegador antes de integrarse.",
+            en: "Every logo exports with text converted to paths, gradients without an alpha channel, and browser validation before integration.",
+          },
+          alternative: {
+            es: "Exportar del editor y confiar.",
+            en: "Exporting from the editor and trusting it.",
+          },
+          reason: {
+            es: "Un stop de gradiente con opacidad produce un logo lavado en producción; una fuente no instalada rompe el wordmark en un correo. El checklist existe porque cada punto fue un bug visual real.",
+            en: "A gradient stop with opacity produces a washed-out logo in production; a missing font breaks the wordmark in an email. The checklist exists because every item was a real visual bug.",
+          },
+        },
+        {
+          title: {
+            es: "Los errores terminan en notas enlazadas",
+            en: "Errors end up as linked notes",
+          },
+          choice: {
+            es: "Cada incidente de producción termina en una nota: síntoma, causa raíz, fix y prevención — y las notas se enlazan entre sí.",
+            en: "Every production incident ends in a note: symptom, root cause, fix and prevention — and the notes link to each other.",
+          },
+          alternative: {
+            es: "Arreglar y seguir.",
+            en: "Fix it and move on.",
+          },
+          reason: {
+            es: "El mismo tipo de error regresa con otra cara. 53 notas después, el diagnóstico de un bug nuevo empieza por buscar a su primo en la bitácora — y muchas veces ya está ahí.",
+            en: "The same class of error comes back wearing a different face. 53 notes later, diagnosing a new bug starts by looking up its cousin in the log — and it's often already there.",
+          },
+        },
+        {
+          title: {
+            es: "Reproducir antes de arreglar",
+            en: "Reproduce before fixing",
+          },
+          choice: {
+            es: "Los bugs “aleatorios” se reproducen con tests de navegador automatizados antes de proponer cualquier fix.",
+            en: "“Random” bugs get reproduced with automated browser tests before any fix is proposed.",
+          },
+          alternative: {
+            es: "Arreglar por hipótesis.",
+            en: "Fixing by hypothesis.",
+          },
+          reason: {
+            es: "Un fix sin reproducción es una apuesta. La reproducción convierte la discusión en evidencia — y se queda como test de regresión.",
+            en: "A fix without a reproduction is a bet. The reproduction turns discussion into evidence — and stays behind as a regression test.",
+          },
+        },
+      ],
+      wentWrong: [
+        {
+          title: {
+            es: "El selector que se rompió al quitar un encabezado",
+            en: "The selector that broke by removing a header",
+          },
+          body: {
+            es: "Reordenar la estructura de una etiqueta imprimible corrió un selector nth-child del CSS de impresión: la regla que estiraba el cuerpo terminó apuntando al pie. Los selectores posicionales son acoplamiento invisible; en documentos imprimibles, todo cambio estructural exige re-verificar la impresión.",
+            en: "Reordering a printable label's structure shifted an nth-child selector in the print CSS: the rule that stretched the body ended up targeting the footer. Positional selectors are invisible coupling; in printable documents, every structural change demands re-verifying the print.",
+          },
+        },
+        {
+          title: {
+            es: "La “preferencia” que era autocorrector",
+            en: "The “preference” that was autocorrect",
+          },
+          body: {
+            es: "Un alta de usuarios fallaba en silencio: el autocorrector del teléfono convertía el correo en una versión con acento y el input la aceptaba sin queja. La validación ahora normaliza antes de validar. Cuando el bug parece imposible, sospecha del teclado.",
+            en: "A user signup failed silently: the phone's autocorrect turned the email into an accented version and the input accepted it without complaint. Validation now normalizes before validating. When a bug looks impossible, suspect the keyboard.",
+          },
+        },
+      ],
+    },
   },
 ];
 
