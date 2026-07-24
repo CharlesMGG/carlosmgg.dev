@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
+import { sfxSelect } from "@/lib/sfx";
 
 type Props = {
   locale: Locale;
@@ -40,6 +41,7 @@ export function CommandMenu({ locale, nav }: Props) {
               <li key={item.href}>
                 <Link
                   href={item.href}
+                  onClick={() => sfxSelect()}
                   aria-current={active ? "page" : undefined}
                   className={`block rounded-lg px-3 py-2 text-sm transition-colors ${
                     active
@@ -67,6 +69,7 @@ export function CommandMenu({ locale, nav }: Props) {
               <li key={item.href} className="flex-1">
                 <Link
                   href={item.href}
+                  onClick={() => sfxSelect()}
                   aria-current={active ? "page" : undefined}
                   className={`block py-3 text-center font-mono text-[11px] uppercase tracking-widest transition-colors ${
                     active ? "text-gold" : "text-mist"

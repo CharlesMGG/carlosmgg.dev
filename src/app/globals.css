@@ -114,6 +114,23 @@ body {
   animation: portal-veil-in 0.45s ease forwards;
 }
 
+/* Polvo dorado de la caída inicial */
+@keyframes dive-dust-up {
+  from {
+    transform: translateY(110vh);
+  }
+  to {
+    transform: translateY(-30vh);
+  }
+}
+
+.dive-dust {
+  background: linear-gradient(to top, transparent, var(--color-gold), transparent);
+  animation-name: dive-dust-up;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

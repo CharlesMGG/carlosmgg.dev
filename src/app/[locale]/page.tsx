@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { isLocale, getDictionary } from "@/i18n";
 import { WorldMap } from "@/components/map/WorldMap";
+import { DiveIntro } from "@/components/vitral/DiveIntro";
 
 export default async function HomePage({
   params,
@@ -13,6 +14,7 @@ export default async function HomePage({
 
   return (
     <div className="mx-auto max-w-6xl px-6">
+      <DiveIntro eyebrow={dict.hero.eyebrow} skipLabel={dict.common.skipIntro} />
       {/* Hero */}
       <section className="flex min-h-[62dvh] flex-col justify-center pt-24 md:pt-16">
         <p className="font-mono text-xs uppercase tracking-[0.3em] text-gold">

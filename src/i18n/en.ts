@@ -54,5 +54,7 @@ export const en: Dictionary = {
   },
   common: {
     skip: "Skip to content",
+    sound: "Sound",
+    skipIntro: "Skip",
   },
 };

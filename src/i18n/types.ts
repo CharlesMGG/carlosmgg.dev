@@ -51,5 +51,7 @@ export type Dictionary = {
   };
   common: {
     skip: string;
+    sound: string;
+    skipIntro: string;
   };
 };

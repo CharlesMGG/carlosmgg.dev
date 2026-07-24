@@ -54,5 +54,7 @@ export const es: Dictionary = {
   },
   common: {
     skip: "Saltar al contenido",
+    sound: "Sonido",
+    skipIntro: "Saltar",
   },
 };

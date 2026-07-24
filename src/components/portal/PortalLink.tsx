@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { createPortal } from "react-dom";
 import { useEffect, useState } from "react";
 import { usePrefersReducedMotion } from "@/lib/usePrefersReducedMotion";
+import { sfxEnter } from "@/lib/sfx";
 
 type Props = {
   href: string;
@@ -28,9 +29,10 @@ export function PortalLink({ href, from, to, className, children }: Props) {
   const [burst, setBurst] = useState<{ x: number; y: number } | null>(null);
 
   const onClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    if (reduced) return;
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     if (event.button !== 0) return;
+    sfxEnter();
+    if (reduced) return;
     event.preventDefault();
     let { clientX: x, clientY: y } = event;
     if (x === 0 && y === 0) {

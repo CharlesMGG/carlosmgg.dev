@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { locales, isLocale, getDictionary, type Locale } from "@/i18n";
 import { CommandMenu } from "@/components/chrome/CommandMenu";
 import { LocaleSwitch } from "@/components/chrome/LocaleSwitch";
+import { SoundToggle } from "@/components/chrome/SoundToggle";
 import { Footer } from "@/components/chrome/Footer";
 import { SITE } from "@/data/site";
 import "../globals.css";
@@ -71,6 +72,7 @@ export default async function LocaleLayout({
           {dict.common.skip}
         </a>
         <LocaleSwitch current={locale} />
+        <SoundToggle label={dict.common.sound} />
         <main id="main" className="pb-20 md:pb-0">
           {children}
         </main>
