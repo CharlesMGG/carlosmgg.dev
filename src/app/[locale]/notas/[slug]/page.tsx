@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale, getDictionary } from "@/i18n";
+import { Footer } from "@/components/chrome/Footer";
 import { notes, getNote } from "@/data/notes";
 
 export function generateStaticParams() {
@@ -36,6 +37,7 @@ export default async function NotePage({
   const { default: Body } = await note.body[locale]();
 
   return (
+    <>
     <article className="mx-auto max-w-3xl px-6 pb-24 pt-24">
       <Link
         href={`/${locale}/notas`}
@@ -58,5 +60,9 @@ export default async function NotePage({
         <Body />
       </div>
     </article>
+    <div className="pb-16 md:pb-0">
+      <Footer footer={dict.footer} />
+    </div>
+    </>
   );
 }

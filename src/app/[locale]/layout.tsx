@@ -1,17 +1,21 @@
 import type { Metadata, Viewport } from "next";
-import { Sora, Inter, IBM_Plex_Mono } from "next/font/google";
+import { M_PLUS_Rounded_1c, Inter, IBM_Plex_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next";
 import { locales, isLocale, getDictionary, type Locale } from "@/i18n";
 import { CommandMenu } from "@/components/chrome/CommandMenu";
 import { LocaleSwitch } from "@/components/chrome/LocaleSwitch";
 import { SoundToggle } from "@/components/chrome/SoundToggle";
-import { Footer } from "@/components/chrome/Footer";
+import { CursorGlow } from "@/components/chrome/CursorGlow";
 import { SITE } from "@/data/site";
 import "../globals.css";
 
-/* Sora: sí, como el protagonista. El que abre devtools, lo cacha. */
-const sora = Sora({ subsets: ["latin"], variable: "--font-sora" });
+/* M PLUS Rounded: la sans redondeada estilo Rodin de los menús del juego */
+const round = M_PLUS_Rounded_1c({
+  subsets: ["latin"],
+  weight: ["500", "700", "800"],
+  variable: "--font-round",
+});
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const plex = IBM_Plex_Mono({
   subsets: ["latin"],
@@ -89,7 +93,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${sora.variable} ${inter.variable} ${plex.variable} antialiased`}
+      className={`${round.variable} ${inter.variable} ${plex.variable} antialiased`}
     >
       <body className="min-h-dvh">
         <a
@@ -98,14 +102,10 @@ export default async function LocaleLayout({
         >
           {dict.common.skip}
         </a>
+        <CursorGlow />
         <LocaleSwitch current={locale} />
         <SoundToggle label={dict.common.sound} />
-        <main id="main" className="pb-20 md:pb-0">
-          {children}
-        </main>
-        <div className="pb-16 md:pb-0">
-          <Footer footer={dict.footer} />
-        </div>
+        <main id="main">{children}</main>
         <CommandMenu locale={locale} nav={dict.nav} />
         <script
           type="application/ld+json"

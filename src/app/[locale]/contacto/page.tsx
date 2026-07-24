@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { isLocale, getDictionary } from "@/i18n";
+import { Footer } from "@/components/chrome/Footer";
 import { SITE } from "@/data/site";
 import { ContactForm } from "./ContactForm";
 
@@ -33,6 +34,7 @@ export default async function ContactPage({
   );
 
   return (
+    <>
     <div className="mx-auto max-w-4xl px-6 pb-24 pt-28">
       <h1 className="font-display text-3xl font-semibold text-ink sm:text-4xl">
         {dict.contact.title}
@@ -78,5 +80,9 @@ export default async function ContactPage({
         </p>
       </div>
     </div>
+    <div className="pb-16 md:pb-0">
+      <Footer footer={dict.footer} />
+    </div>
+    </>
   );
 }

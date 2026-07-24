@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale, getDictionary } from "@/i18n";
+import { Footer } from "@/components/chrome/Footer";
 import { notes } from "@/data/notes";
 
 export async function generateMetadata({
@@ -25,6 +26,7 @@ export default async function NotesPage({
   const dict = getDictionary(locale);
 
   return (
+    <>
     <div className="mx-auto max-w-4xl px-6 pb-24 pt-28">
       <h1 className="font-display text-3xl font-semibold text-ink sm:text-4xl">
         {dict.notes.title}
@@ -55,5 +57,9 @@ export default async function NotesPage({
         ))}
       </ul>
     </div>
+    <div className="pb-16 md:pb-0">
+      <Footer footer={dict.footer} />
+    </div>
+    </>
   );
 }

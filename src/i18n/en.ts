@@ -18,6 +18,11 @@ export const en: Dictionary = {
     sub: "Multi-tenant logistics SaaS, field-operations portals and sales-facing products — from data architecture to deployment, in production for real clients.",
     availability: "Open to projects and conversations",
     cta: "Explore the worlds",
+    firstName: "CARLOS",
+    lastName: "GARCÍA",
+    portfolioWord: "PORTFOLIO",
+    role: "full-stack developer",
+    scroll: "scroll",
   },
   worlds: {
     heading: "The worlds",

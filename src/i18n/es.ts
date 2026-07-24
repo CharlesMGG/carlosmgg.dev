@@ -18,6 +18,11 @@ export const es: Dictionary = {
     sub: "SaaS logístico multi-tenant, portales de operación en campo y productos de cara a venta — de la arquitectura de datos al despliegue, en producción y con clientes reales.",
     availability: "Abierto a proyectos y conversaciones",
     cta: "Explorar los mundos",
+    firstName: "CARLOS",
+    lastName: "GARCÍA",
+    portfolioWord: "PORTAFOLIO",
+    role: "desarrollador full-stack",
+    scroll: "desliza",
   },
   worlds: {
     heading: "Los mundos",

@@ -135,7 +135,7 @@ export function Vitral({ className }: { className?: string }) {
         textAnchor="middle"
         fill="#e8c77a"
         style={{
-          font: "600 34px var(--font-sora), sans-serif",
+          font: "700 34px var(--font-round), sans-serif",
           letterSpacing: "0.08em",
         }}
       >

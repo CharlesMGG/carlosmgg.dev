@@ -15,6 +15,11 @@ export type Dictionary = {
     sub: string;
     availability: string;
     cta: string;
+    firstName: string;
+    lastName: string;
+    portfolioWord: string;
+    role: string;
+    scroll: string;
   };
   worlds: {
     heading: string;

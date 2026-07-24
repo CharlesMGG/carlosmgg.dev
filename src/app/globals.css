@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
-  --font-display: var(--font-sora);
+  --font-display: var(--font-round);
   --font-sans: var(--font-inter);
   --font-mono: var(--font-plex);
 }
@@ -112,6 +112,31 @@ body {
   background: var(--color-abyss);
   opacity: 0;
   animation: portal-veil-in 0.45s ease forwards;
+}
+
+/* Giro lentísimo del vitral del hero */
+@keyframes vitral-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.vitral-spin {
+  animation: vitral-spin 240s linear infinite;
+}
+
+/* Número gigante de cada mundo, estilo contorno */
+.big-num {
+  font-family: var(--font-display), sans-serif;
+  font-weight: 800;
+  font-size: clamp(10rem, 32vmin, 24rem);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 2px rgb(232 199 122 / 0.28);
+  user-select: none;
 }
 
 /* Polvo dorado de la caída inicial */

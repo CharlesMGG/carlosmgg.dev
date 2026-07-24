@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { isLocale, getDictionary } from "@/i18n";
 import { worlds, getWorld, JEWELS } from "@/data/worlds";
 import { Reveal } from "@/components/Reveal";
+import { Footer } from "@/components/chrome/Footer";
 
 export function generateStaticParams() {
   return worlds.map((world) => ({ slug: world.slug }));
@@ -39,6 +40,7 @@ export default async function WorldPage({
   const study = world.study;
 
   return (
+    <>
     <div className="mx-auto max-w-4xl px-6 pb-24 pt-24">
       <Reveal>
         <Link
@@ -268,5 +270,9 @@ export default async function WorldPage({
         </>
       )}
     </div>
+    <div className="pb-16 md:pb-0">
+      <Footer footer={dict.footer} />
+    </div>
+    </>
   );
 }
