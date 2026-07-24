@@ -1,0 +1,26 @@
+I was writing the isolation test suite for a multi-tenant SaaS — the tests whose only job is to try reading another client's data and fail — when one of them **didn't fail**.
+
+## The policy that told half the truth
+
+The system uses PostgreSQL Row Level Security: every table carries policies that decide, row by row, which session can see or touch what. The policy in question looked harmless:
+
+```sql
+create policy profiles_update_self on profiles
+  for update using (user_id = auth.uid());
+```
+
+"A user can update their own profile." Sounds reasonable — until you ask **which columns** they can update. Answer: all of them. Including `role`.
+
+Any user could make themselves `owner` of their account with a single request. Privilege self-promotion, served by the very layer meant to prevent it.
+
+## Eyes read intent; tests read permissions
+
+The interesting part is *who* found the bug. The policy had been reviewed — I read it, the database linter read it, and both readings saw what the policy *meant* to say: "edit your profile." The isolation test doesn't read intent: it attempted `UPDATE profiles SET role = 'owner'` with a plain user session, and the database said yes.
+
+The fix: the UPDATE policy now enforces via `WITH CHECK` that the role cannot change — role promotion only exists as an explicit owner operation, in a dedicated function.
+
+## The rule that stuck
+
+**In multi-tenant, isolation is proven, not promised.** The suite runs on every change and systematically tries to cross the tenant boundary and escalate privileges. Every attempt the database rejects is the only real evidence that the wall exists.
+
+If your isolation lives in `WHERE` clauses your application promises to always include, you don't have a wall: you have a habit.

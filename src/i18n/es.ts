@@ -41,12 +41,22 @@ export const es: Dictionary = {
   notes: {
     title: "Notas de campo",
     sub: "Lecciones de operar software en producción: causa raíz, fix y prevención.",
-    comingSoon: "Las primeras entradas están en el horno.",
+    read: "Leer la nota",
   },
   contact: {
     title: "Contacto",
     sub: "¿Un proyecto, una vacante o solo una conversación? Escríbeme.",
     emailLabel: "Correo directo",
+    cv: "Descargar CV (PDF · ES+EN)",
+    form: {
+      name: "Nombre",
+      email: "Correo",
+      message: "Mensaje",
+      send: "Enviar",
+      sending: "Enviando…",
+      success: "Recibido. Te contesto pronto — gracias por escribir.",
+      error: "El envío falló de verdad (no es tu conexión). Escríbeme directo al correo de abajo.",
+    },
   },
   footer: {
     tagline: "Hecho con Next.js, Tailwind y demasiado navy.",

@@ -1,0 +1,26 @@
+El reporte llegó por teléfono, no por monitoreo: "los clientes no están recibiendo sus correos". Ni recuperación de contraseña, ni confirmaciones, nada. La plataforma llevaba días así y ningún dashboard se había puesto rojo.
+
+## El síntoma que no existía
+
+Lo primero que revisé fue el código de envío. Estaba correcto. Los logs de la aplicación: limpios. El proveedor de correo reportaba… nada. Ni envíos exitosos ni fallidos. Como si la plataforma jamás hubiera intentado enviar.
+
+La causa terminó siendo de una humildad brutal: en la variable de entorno del remitente — el campo `FROM` — alguien había pegado por accidente **la API key completa** junto a la dirección. Cada intento de envío devolvía `422 Unprocessable Entity`: dirección de remitente inválida.
+
+## Por qué nadie se enteró
+
+Aquí está la parte que vale la pena contar. El SDK del proveedor **no lanza excepciones cuando el envío falla** — devuelve un objeto `{ data, error }` y sigue como si nada. Nuestro código revisaba el happy path y nada más:
+
+```ts
+await resend.emails.send({ ... });
+// y la vida continúa, haya salido o no
+```
+
+Ningún `try/catch` iba a atrapar esto, porque **no había nada que atrapar**. El error viajaba en un valor de retorno que nadie leía. La plataforma no estaba rota — estaba fingiendo, que es peor.
+
+## Lo que cambió
+
+- Todo envío pasa ahora por un `sendOrThrow` que revisa `error` explícitamente y **truena ruidosamente** si existe.
+- El fallo de correo se registra como evento de auditoría consultable — el silencio dejó de ser una opción.
+- Y la regla que me llevo a cada proyecto: **cuando un SDK no lanza, el contrato de errores es tu responsabilidad, no la suya.** Léele la firma de retorno a todo cliente HTTP antes de confiarle algo que importe.
+
+El fix tomó dos minutos. Encontrarlo tomó días de correos perdidos. Esa proporción — fix trivial, detección carísima — es la firma de los fallos silenciosos.

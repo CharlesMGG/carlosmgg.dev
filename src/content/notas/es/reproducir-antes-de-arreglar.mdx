@@ -1,0 +1,21 @@
+"Me deslogueó otra vez." El reporte llegaba una o dos veces por semana, siempre distinto: usuarios diferentes, páginas diferentes, horas diferentes. Sin patrón, sin error en consola, sin forma de provocarlo a voluntad. El clásico bug "aleatorio".
+
+## La tentación de arreglar por hipótesis
+
+Con un bug así, la tentación es fuerte: "seguro es X, subamos un fix y a ver si deja de pasar". Es la peor jugada posible — si el reporte deja de llegar por dos semanas, ¿lo arreglaste o tuviste suerte? Y si vuelve, ya no sabes si es el mismo bug o uno nuevo encima de tu "fix".
+
+Así que la regla fue: **nadie toca código hasta poder provocar el deslogueo a voluntad.**
+
+## Cazarlo con un robot
+
+Escribí un test de navegador automatizado que hacía lo que un usuario impaciente hace: navegar rápido, con clics en ráfaga sobre el menú, durante una sesión con el token cerca de expirar. Cientos de iteraciones, parametrizando una sola variable a la vez.
+
+Ahí apareció, reproducible al fin: una **condición de carrera en la rotación del refresh token**. Dos requests concurrentes llegaban con el mismo token; el primero lo rotaba (uso único), el segundo llegaba microsegundos tarde con un token ya quemado — y el sistema, correctamente paranoico, mataba la sesión entera.
+
+El "aleatorio" tenía receta exacta: token por expirar + navegación concurrente. Por eso castigaba a los usuarios más activos, en sesiones largas, con clics rápidos.
+
+## La reproducción es el entregable
+
+Con la receta en la mano, el fix fue casi anticlimático: ampliar la ventana de tolerancia de reutilización del token y extender su vida útil — dos parámetros de configuración. Además de eliminar el prefetch agresivo que multiplicaba requests concurrentes innecesarios.
+
+Pero el valor no estuvo en el fix. Estuvo en que la discusión pasó de "creo que es esto" a "aquí está fallando, córrelo tú mismo". **Un fix sin reproducción es una apuesta; con reproducción es una consecuencia.** Y el test se queda en la suite: si la carrera regresa, la atrapa el robot antes que un usuario.

@@ -1,0 +1,21 @@
+"It logged me out again." The report came in once or twice a week, always different: different users, different pages, different times. No pattern, no console error, no way to trigger it on demand. The classic "random" bug.
+
+## The temptation to fix by hypothesis
+
+With a bug like this the temptation is strong: "it's probably X, let's ship a fix and see if it stops." That's the worst possible move — if reports stop for two weeks, did you fix it or did you get lucky? And if it comes back, you no longer know whether it's the same bug or a new one stacked on top of your "fix."
+
+So the rule was: **nobody touches code until we can trigger the logout on demand.**
+
+## Hunting it with a robot
+
+I wrote an automated browser test that did what an impatient user does: navigate fast, with burst-clicking on the menu, during a session with a token close to expiring. Hundreds of iterations, parameterizing one variable at a time.
+
+There it was, reproducible at last: a **race condition in refresh-token rotation**. Two concurrent requests arrived with the same token; the first rotated it (single use), the second arrived microseconds late with an already-burned token — and the system, correctly paranoid, killed the whole session.
+
+The "random" had an exact recipe: token about to expire + concurrent navigation. Which is why it punished the most active users, in long sessions, clicking fast.
+
+## The reproduction is the deliverable
+
+With the recipe in hand, the fix was almost anticlimactic: widen the token-reuse tolerance window and extend its lifetime — two configuration parameters. Plus removing the aggressive prefetching that multiplied unnecessary concurrent requests.
+
+But the value wasn't in the fix. It was in the discussion moving from "I think it's this" to "here's where it breaks, run it yourself." **A fix without a reproduction is a bet; with one, it's a consequence.** And the test stays in the suite: if the race ever returns, the robot catches it before a user does.

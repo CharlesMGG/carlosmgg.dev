@@ -38,12 +38,22 @@ export type Dictionary = {
   notes: {
     title: string;
     sub: string;
-    comingSoon: string;
+    read: string;
   };
   contact: {
     title: string;
     sub: string;
     emailLabel: string;
+    cv: string;
+    form: {
+      name: string;
+      email: string;
+      message: string;
+      send: string;
+      sending: string;
+      success: string;
+      error: string;
+    };
   };
   footer: {
     tagline: string;

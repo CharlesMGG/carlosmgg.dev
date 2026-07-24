@@ -1,0 +1,26 @@
+The report came in by phone, not by monitoring: "clients aren't getting their emails." No password recovery, no confirmations, nothing. The platform had been like this for days and no dashboard had turned red.
+
+## The symptom that didn't exist
+
+First thing I checked was the sending code. It was correct. Application logs: clean. The email provider reported… nothing. No successful sends, no failed ones. As if the platform had never even tried.
+
+The cause turned out to be brutally humbling: in the sender's environment variable — the `FROM` field — someone had accidentally pasted **the full API key** next to the address. Every send attempt returned `422 Unprocessable Entity`: invalid sender address.
+
+## Why nobody found out
+
+Here's the part worth telling. The provider's SDK **doesn't throw when a send fails** — it returns a `{ data, error }` object and moves on as if nothing happened. Our code checked the happy path and nothing else:
+
+```ts
+await resend.emails.send({ ... });
+// and life goes on, whether it worked or not
+```
+
+No `try/catch` was ever going to catch this, because **there was nothing to catch**. The error traveled in a return value nobody read. The platform wasn't broken — it was pretending, which is worse.
+
+## What changed
+
+- Every send now goes through a `sendOrThrow` that checks `error` explicitly and **fails loudly** when it exists.
+- Email failures are recorded as a queryable audit event — silence stopped being an option.
+- And the rule I carry to every project: **when an SDK doesn't throw, the error contract is your responsibility, not theirs.** Read the return signature of every HTTP client before trusting it with something that matters.
+
+The fix took two minutes. Finding it took days of lost email. That ratio — trivial fix, expensive detection — is the signature of silent failures.

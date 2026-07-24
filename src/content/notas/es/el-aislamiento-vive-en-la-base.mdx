@@ -1,0 +1,26 @@
+Estaba escribiendo la suite de tests de aislamiento de un SaaS multi-tenant — esos tests cuyo único trabajo es intentar leer datos de otro cliente y fallar — cuando uno **no falló**.
+
+## La policy que decía la verdad a medias
+
+El sistema usa Row Level Security de PostgreSQL: cada tabla lleva policies que deciden, fila por fila, qué sesión puede ver o tocar qué. La policy en cuestión parecía inofensiva:
+
+```sql
+create policy profiles_update_self on profiles
+  for update using (user_id = auth.uid());
+```
+
+"Un usuario puede actualizar su propio perfil." Suena razonable — hasta que preguntas **qué columnas** puede actualizar. Respuesta: todas. Incluyendo `role`.
+
+Un usuario cualquiera podía hacerse `owner` de su cuenta con un solo request. Auto-promoción de privilegios, servida por la misma capa que debía impedirla.
+
+## Los ojos leen intención; los tests leen permisos
+
+Lo interesante es *quién* encontró el bug. La policy había pasado por review — la leí yo, la leyó el linter de la base, y las dos lecturas vieron lo que la policy *quería* decir: "edita tu perfil". El test de aislamiento no lee intenciones: intentó `UPDATE profiles SET role = 'owner'` con una sesión de usuario raso, y la base le dijo que sí.
+
+El fix: la policy de UPDATE valida ahora con un `WITH CHECK` que el rol no cambie — el ascenso de rol solo existe como una operación explícita del dueño, en una función dedicada.
+
+## La regla que quedó
+
+**En multi-tenant, el aislamiento se prueba, no se promete.** La suite corre en cada cambio e intenta, sistemáticamente, cruzar la frontera entre tenants y escalar privilegios. Cada intento que la base rechaza es la única evidencia real de que el muro existe.
+
+Si tu aislamiento vive en cláusulas `WHERE` que tu aplicación promete incluir siempre, no tienes un muro: tienes una costumbre.

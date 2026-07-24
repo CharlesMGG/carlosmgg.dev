@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { isLocale, getDictionary } from "@/i18n";
+import { notes } from "@/data/notes";
 
 export async function generateMetadata({
   params,
@@ -28,9 +30,30 @@ export default async function NotesPage({
         {dict.notes.title}
       </h1>
       <p className="mt-4 max-w-2xl text-lg text-mist">{dict.notes.sub}</p>
-      <p className="mt-10 rounded-2xl border border-dashed border-white/10 p-6 text-sm text-mist">
-        {dict.notes.comingSoon}
-      </p>
+
+      <ul className="mt-12 space-y-5">
+        {notes.map((note) => (
+          <li key={note.slug}>
+            <Link
+              href={`/${locale}/notas/${note.slug}`}
+              className="glass group block rounded-2xl p-6 transition-transform duration-300 hover:-translate-y-0.5 sm:p-7"
+            >
+              <p className="font-mono text-[11px] uppercase tracking-widest text-mist">
+                {note.date}
+              </p>
+              <h2 className="mt-2 font-display text-xl font-semibold text-ink transition-colors group-hover:text-gold-soft">
+                {note.title[locale]}
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-mist">
+                {note.summary[locale]}
+              </p>
+              <p className="mt-4 text-sm font-medium text-gold">
+                {dict.notes.read} →
+              </p>
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
