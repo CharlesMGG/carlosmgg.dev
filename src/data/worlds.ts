@@ -9,6 +9,29 @@ export type WorldStat = {
   label: L<string>;
 };
 
+export type WorldDecision = {
+  title: L<string>;
+  choice: L<string>;
+  alternative: L<string>;
+  reason: L<string>;
+};
+
+export type WorldLesson = {
+  title: L<string>;
+  body: L<string>;
+};
+
+/** Capa 2 — el descenso: problema, decisiones con alternativa, y qué salió mal */
+export type WorldStudy = {
+  role: L<string>;
+  period: L<string>;
+  status: L<string>;
+  stack: string[];
+  problem: L<string[]>;
+  decisions: WorldDecision[];
+  wentWrong: WorldLesson[];
+};
+
 export type World = {
   slug: string;
   jewel: Jewel;
@@ -17,6 +40,7 @@ export type World = {
   title: L<string>;
   tagline: L<string>;
   stats: WorldStat[];
+  study?: WorldStudy;
 };
 
 /** Gradientes por joya — "un mundo, una paleta" (KH III) */
@@ -55,6 +79,117 @@ export const worlds: World[] = [
         label: { es: "dashboards agregados en SQL", en: "SQL-aggregated dashboards" },
       },
     ],
+    study: {
+      role: {
+        es: "Diseño y desarrollo de punta a punta — único desarrollador",
+        en: "End-to-end design and development — sole developer",
+      },
+      period: { es: "2025 — hoy", en: "2025 — present" },
+      status: { es: "En producción", en: "In production" },
+      stack: [
+        "Next.js (App Router)",
+        "TypeScript",
+        "Supabase — PostgreSQL · RLS · PL/pgSQL",
+        "Vercel",
+        "Resend",
+        "Upstash",
+      ],
+      problem: {
+        es: [
+          "Un operador logístico mexicano corría su operación sobre hojas de cálculo y mensajes: guías hechas a mano, cero visibilidad de cada envío y clientes corporativos pidiendo su propio portal. Necesitaba una plataforma completa — generación de guías con código de barras, rastreo por etapas, portales white-label por organización, operadores en campo con evidencia de entrega y reportes listos para facturar.",
+          "La restricción real: un solo desarrollador, presupuesto de PyME y una operación que no se podía detener. Cada feature entró a producción mientras el negocio ya corría sobre la plataforma.",
+        ],
+        en: [
+          "A Mexican logistics operator ran its business on spreadsheets and chat messages: hand-made waybills, zero visibility into shipments, and corporate clients asking for their own portal. It needed a full platform — barcode waybill generation, stage-based tracking, white-label portals per organization, field couriers with delivery evidence, and billing-ready reports.",
+          "The real constraint: a single developer, an SMB budget, and an operation that could not stop. Every feature shipped to production while the business was already running on the platform.",
+        ],
+      },
+      decisions: [
+        {
+          title: {
+            es: "El aislamiento vive en la base de datos",
+            en: "Isolation lives in the database",
+          },
+          choice: {
+            es: "Row Level Security de PostgreSQL en cada tabla: la sesión de una organización físicamente no puede leer filas de otra.",
+            en: "PostgreSQL Row Level Security on every table: one organization's session physically cannot read another's rows.",
+          },
+          alternative: {
+            es: "Filtrar por organización en cada query desde la aplicación.",
+            en: "Filtering by organization in every query from the application.",
+          },
+          reason: {
+            es: "Un bug de mi código no debe poder filtrar datos entre clientes. La auditoría de seguridad y la prueba de carga cerraron con 0 hallazgos críticos.",
+            en: "A bug in my code must not be able to leak data across clients. The security audit and load test closed with 0 critical findings.",
+          },
+        },
+        {
+          title: {
+            es: "Los estados se mueven por RPCs transaccionales, guía por guía",
+            en: "State moves through transactional RPCs, one waybill at a time",
+          },
+          choice: {
+            es: "Funciones PL/pgSQL que procesan cada guía de forma independiente y reportan las que omiten.",
+            en: "PL/pgSQL functions that process each waybill independently and report the ones they skip.",
+          },
+          alternative: {
+            es: "Updates de estatus directos desde el cliente, en lote.",
+            en: "Direct batch status updates from the client.",
+          },
+          reason: {
+            es: "Aprendido en producción: una sola guía en estado inválido llegó a congelar la confirmación de una parada completa. El RPC por guía convierte un fallo total en un reporte parcial.",
+            en: "Learned in production: a single waybill in an invalid state once froze the confirmation of an entire stop. Per-waybill RPCs turn a total failure into a partial report.",
+          },
+        },
+        {
+          title: {
+            es: "Los dashboards agregan en SQL, no en el navegador",
+            en: "Dashboards aggregate in SQL, not in the browser",
+          },
+          choice: {
+            es: "RPCs con GROUP BY que devuelven ~20 filas ya agregadas en un solo viaje.",
+            en: "GROUP BY RPCs that return ~20 pre-aggregated rows in a single round trip.",
+          },
+          alternative: {
+            es: "Traer las filas al cliente y agregar en JavaScript.",
+            en: "Fetching rows to the client and aggregating in JavaScript.",
+          },
+          reason: {
+            es: "Medido, no supuesto: el dashboard más pesado paginaba ~23,000 filas por carga. La versión agregada lo resuelve en una llamada.",
+            en: "Measured, not assumed: the heaviest dashboard paginated ~23,000 rows per load. The aggregated version resolves it in one call.",
+          },
+        },
+      ],
+      wentWrong: [
+        {
+          title: { es: "El correo murió en silencio", en: "Email died silently" },
+          body: {
+            es: "Una API key pegada por error en el campo FROM hizo que todo correo transaccional devolviera 422 — y el SDK no lanza excepciones, así que la plataforma siguió “funcionando” sin avisarle a nadie. El fix fue trivial; la lección no: cada envío revisa ahora el error explícito y falla ruidosamente. Un sistema que finge éxito es peor que uno que truena.",
+            en: "An API key pasted by mistake into the FROM field made every transactional email return 422 — and the SDK doesn't throw, so the platform kept “working” without telling anyone. The fix was trivial; the lesson wasn't: every send now checks the explicit error and fails loudly. A system that fakes success is worse than one that crashes.",
+          },
+        },
+        {
+          title: {
+            es: "Deslogueos aleatorios que nadie podía reproducir",
+            en: "Random logouts nobody could reproduce",
+          },
+          body: {
+            es: "Usuarios expulsados “al azar” al hacer clics rápidos. Antes de tocar código, lo reproduje con un test de navegador automatizado: era una condición de carrera en la rotación del refresh token bajo navegación concurrente. Sin la reproducción, cualquier fix habría sido superstición.",
+            en: "Users kicked out “at random” when clicking fast. Before touching any code, I reproduced it with an automated browser test: a race condition in refresh-token rotation under concurrent navigation. Without the reproduction, any fix would have been superstition.",
+          },
+        },
+        {
+          title: {
+            es: "Los escaneos vivían solo en memoria",
+            en: "Scans lived only in memory",
+          },
+          body: {
+            es: "Los operadores escaneaban decenas de paquetes y un deslogueo a media captura lo borraba todo: el borrador vivía únicamente en el estado de React. Hoy persiste en el dispositivo, se rehidrata al volver y el envío tolera quedarse sin conexión. El campo no perdona al software optimista.",
+            en: "Couriers scanned dozens of packages and a logout mid-capture erased everything: the draft lived only in React state. It now persists on the device, rehydrates on return, and submission tolerates going offline. The field does not forgive optimistic software.",
+          },
+        },
+      ],
+    },
   },
   {
     slug: "operacion-en-campo",

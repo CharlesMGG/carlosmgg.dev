@@ -26,6 +26,18 @@ export const en: Dictionary = {
     comingSoon: "The full case study for this world ships in the next milestone.",
     back: "Back to the map",
   },
+  study: {
+    role: "Role",
+    period: "Period",
+    status: "Status",
+    stack: "Stack",
+    problem: "The problem",
+    decisions: "Decisions that mattered",
+    alternative: "Discarded alternative",
+    because: "Why",
+    wentWrong: "What went wrong",
+    screenshotsSoon: "Screenshots with demo data — in the works.",
+  },
   notes: {
     title: "Field notes",
     sub: "Lessons from running software in production: root cause, fix, and prevention.",

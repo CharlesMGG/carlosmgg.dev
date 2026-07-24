@@ -26,6 +26,18 @@ export const es: Dictionary = {
     comingSoon: "El case study completo de este mundo llega en el siguiente corte.",
     back: "Volver al mapa",
   },
+  study: {
+    role: "Rol",
+    period: "Periodo",
+    status: "Estado",
+    stack: "Stack",
+    problem: "El problema",
+    decisions: "Decisiones que importaron",
+    alternative: "Alternativa descartada",
+    because: "Por qué",
+    wentWrong: "Qué salió mal",
+    screenshotsSoon: "Capturas con datos de demostración — en preparación.",
+  },
   notes: {
     title: "Notas de campo",
     sub: "Lecciones de operar software en producción: causa raíz, fix y prevención.",

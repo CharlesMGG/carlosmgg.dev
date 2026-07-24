@@ -52,17 +52,66 @@ body {
   outline-offset: 2px;
 }
 
-@layer components {
-  /* KH III command-menu glass: translucent navy + 1px edge of light */
-  .glass {
-    background: rgb(19 29 63 / 0.55);
-    -webkit-backdrop-filter: blur(14px) saturate(1.3);
-    backdrop-filter: blur(14px) saturate(1.3);
-    border: 1px solid rgb(232 199 122 / 0.16);
-    box-shadow:
-      inset 0 1px 0 rgb(242 244 248 / 0.07),
-      0 8px 32px rgb(2 6 18 / 0.55);
+/* KH III command-menu glass: translucent navy + 1px edge of light.
+   @utility para poder usarlo con variantes (max-md:glass, md:glass). */
+@utility glass {
+  background: rgb(19 29 63 / 0.55);
+  -webkit-backdrop-filter: blur(14px) saturate(1.3);
+  backdrop-filter: blur(14px) saturate(1.3);
+  border: 1px solid rgb(232 199 122 / 0.16);
+  box-shadow:
+    inset 0 1px 0 rgb(242 244 248 / 0.07),
+    0 8px 32px rgb(2 6 18 / 0.55);
+}
+
+/* Portal de mundo: anillo de luz que se expande desde el clic (formchange) */
+@keyframes portal-ring-expand {
+  from {
+    transform: translate(-50%, -50%) scale(0.15);
+    opacity: 1;
   }
+  to {
+    transform: translate(-50%, -50%) scale(28);
+    opacity: 0.9;
+  }
+}
+
+@keyframes portal-veil-in {
+  0% {
+    opacity: 0;
+  }
+  55% {
+    opacity: 0.25;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.portal-ring {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  border-radius: 9999px;
+  background: conic-gradient(
+    from 0deg,
+    var(--pl-from),
+    var(--pl-to),
+    var(--color-gold),
+    var(--pl-from)
+  );
+  filter: blur(6px) saturate(1.4);
+  -webkit-mask: radial-gradient(circle, transparent 52%, black 60%);
+  mask: radial-gradient(circle, transparent 52%, black 60%);
+  animation: portal-ring-expand 0.45s cubic-bezier(0.3, 0, 0.7, 1) forwards;
+}
+
+.portal-veil {
+  position: absolute;
+  inset: 0;
+  background: var(--color-abyss);
+  opacity: 0;
+  animation: portal-veil-in 0.45s ease forwards;
 }
 
 @media (prefers-reduced-motion: reduce) {

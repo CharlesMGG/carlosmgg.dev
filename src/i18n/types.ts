@@ -23,6 +23,18 @@ export type Dictionary = {
     comingSoon: string;
     back: string;
   };
+  study: {
+    role: string;
+    period: string;
+    status: string;
+    stack: string;
+    problem: string;
+    decisions: string;
+    alternative: string;
+    because: string;
+    wentWrong: string;
+    screenshotsSoon: string;
+  };
   notes: {
     title: string;
     sub: string;
