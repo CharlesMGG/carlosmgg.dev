@@ -193,7 +193,7 @@ export default async function HomePage({
               {dict.social.kicker}
             </div>
             <a
-              href={dict.social.url}
+              href={SITE.instagram}
               target="_blank"
               rel="noopener noreferrer"
               className="ig-word font-display text-[clamp(46px,11vw,150px)] font-bold italic leading-[0.82] tracking-[-0.02em]"
@@ -201,12 +201,12 @@ export default async function HomePage({
               INSTAGRAM
             </a>
             <a
-              href={dict.social.url}
+              href={SITE.instagram}
               target="_blank"
               rel="noopener noreferrer"
               className="font-display text-[clamp(13px,1.6vw,16px)] tracking-[0.16em] text-gold"
             >
-              {dict.social.handle}
+              {SITE.instagramHandle}
             </a>
           </Reveal>
         </section>

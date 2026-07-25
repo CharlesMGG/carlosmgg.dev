@@ -58,8 +58,6 @@ export type Dictionary = {
   };
   social: {
     kicker: string;
-    handle: string;
-    url: string;
   };
   rail: {
     hero: string;

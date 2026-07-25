@@ -69,8 +69,6 @@ export const es: Dictionary = {
   },
   social: {
     kicker: "SÍGUEME EN",
-    handle: "@carlosmgg",
-    url: "https://instagram.com/",
   },
   rail: {
     hero: "INICIO",

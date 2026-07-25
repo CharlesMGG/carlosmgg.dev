@@ -39,7 +39,8 @@ body {
     #0e1633 0%,
     #060b1a 60%
   );
-  background-attachment: fixed;
+  /* Sin background-attachment: fixed — obliga a repintar el degradado en
+     cada scroll. La profundidad ya la da el canvas de estrellas. */
   color: var(--color-ink);
   font-family: var(--font-display), system-ui, sans-serif;
 }
@@ -126,8 +127,18 @@ body {
   }
 }
 
+/* will-change promueve lo que gira sin parar a su propia capa: el
+   compositor la rota en GPU en vez de repintar 105 paths por frame. */
 .vitral-spin {
   animation: vitral-spin 240s linear infinite;
+  will-change: transform;
+}
+
+/* Las secciones fuera de pantalla no se pintan ni animan. Sin esto, los
+   5 planetas siguen girando sus anillos aunque nadie los vea. */
+#snap-container > section {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 100dvh;
 }
 
 /* Número gigante de cada mundo, estilo contorno itálico */
@@ -266,6 +277,7 @@ body.kh-cursor [role="button"] {
 }
 .float-orb {
   animation: float-orb 7s ease-in-out infinite;
+  will-change: transform;
 }
 .bob {
   animation: bob 2.6s ease-in-out infinite;

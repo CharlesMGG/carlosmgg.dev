@@ -42,17 +42,30 @@ export function CursorGlow() {
         : "rgb(232 199 122 / 0.7)";
     };
 
+    // El bucle se detiene cuando el aro ya alcanzó al cursor: sin esto
+    // corre 60 veces por segundo para siempre, aunque el mouse no se mueva.
     const follow = () => {
-      rx += (mx - rx) * 0.18;
-      ry += (my - ry) * 0.18;
+      const dx = mx - rx;
+      const dy = my - ry;
+      if (Math.abs(dx) < 0.1 && Math.abs(dy) < 0.1) {
+        raf = 0;
+        return;
+      }
+      rx += dx * 0.18;
+      ry += dy * 0.18;
       ring.style.transform = `translate(${rx}px, ${ry}px)`;
       raf = requestAnimationFrame(follow);
     };
+    const wake = () => {
+      if (!raf) raf = requestAnimationFrame(follow);
+    };
 
     window.addEventListener("mousemove", onMove, { passive: true });
+    window.addEventListener("mousemove", wake, { passive: true });
     raf = requestAnimationFrame(follow);
     return () => {
       window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mousemove", wake);
       cancelAnimationFrame(raf);
       document.body.classList.remove("kh-cursor");
     };

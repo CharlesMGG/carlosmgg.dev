@@ -17,22 +17,31 @@ export function Footer({
   nav: Dictionary["nav"];
   locale: Locale;
 }) {
+  // Píldoras, no texto suelto: a 12px pegados al borde eran invisibles.
   const link =
-    "text-mist transition-colors hover:text-gold focus-visible:text-gold";
+    "rounded-full px-3.5 py-2 text-ink/85 transition-colors hover:bg-white/5 hover:text-gold focus-visible:text-gold";
 
   return (
-    <footer className="border-t border-white/5 px-[clamp(24px,7vw,120px)] py-7">
-      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-3 font-display text-[12px] tracking-[0.08em]">
+    <footer className="border-t border-white/5 px-[clamp(24px,7vw,120px)] py-8">
+      <div className="flex flex-wrap items-center justify-between gap-x-6 gap-y-4 font-display text-[13px] tracking-[0.08em]">
         <span className="text-mist">
           © {new Date().getFullYear()} {SITE.name}
         </span>
-        <nav className="flex flex-wrap items-center gap-x-6 gap-y-2">
+        <nav className="-mx-3.5 flex flex-wrap items-center gap-x-1 gap-y-1">
           <Link href={`/${locale}/notas`} className={link}>
             {nav.notes}
           </Link>
           <Link href={`/${locale}/contacto`} className={link}>
             {nav.contact}
           </Link>
+          <a
+            href={SITE.instagram}
+            rel="noopener noreferrer"
+            target="_blank"
+            className={link}
+          >
+            Instagram
+          </a>
           <a
             href={SITE.github}
             rel="noopener noreferrer"
