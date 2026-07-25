@@ -8,9 +8,8 @@ export const SITE = {
   domain: "https://carlosmgg.dev",
   email: "charlesmgg1997@gmail.com",
   github: "https://github.com/CharlesMGG",
-  linkedin: "https://www.linkedin.com/in/carlos-garcia-186215259",
-  // TODO Carlos: reemplazar por el usuario real de Instagram
-  instagram: "https://www.instagram.com/carlosmgg/",
-  instagramHandle: "@carlosmgg",
+  linkedin: "https://www.linkedin.com/in/carlos-g-186215259",
+  instagram: "https://www.instagram.com/not_charly_brown/",
+  instagramHandle: "@not_charly_brown",
   repo: "https://github.com/CharlesMGG/carlosmgg.dev",
 } as const;
