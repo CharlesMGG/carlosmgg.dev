@@ -24,9 +24,14 @@ export function CaseHeader({
     border: "1px solid rgba(232,199,122,0.25)",
   };
 
+  // En la ruta completa el TopBar (sonido + ES/EN) vive fijo arriba a la
+  // derecha: sin este respiro, el botón de volver le queda debajo. El
+  // overlay va por encima del TopBar, así que ahí no hace falta.
+  const clearTopBar = onClose ? "" : "md:pr-[230px]";
+
   return (
     <div
-      className="sticky top-0 z-[5] flex items-center justify-between px-[clamp(20px,6vw,80px)] py-[clamp(16px,3vw,26px)]"
+      className={`sticky top-0 z-[5] flex items-center justify-between px-[clamp(20px,6vw,80px)] py-[clamp(16px,3vw,26px)] ${clearTopBar}`}
       style={{
         background:
           "linear-gradient(#060B1A, rgba(6,11,26,0.6), transparent)",

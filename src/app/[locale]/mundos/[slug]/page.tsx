@@ -49,9 +49,7 @@ export default async function WorldPage({
       <div className="relative z-10">
         <CaseHeader world={world} locale={locale} backLabel={dict.worlds.back} />
         <CaseStudy world={world} index={index} locale={locale} dict={dict} />
-        <div className="px-[clamp(24px,7vw,120px)] pb-10">
-          <Footer footer={dict.footer} nav={dict.nav} locale={locale} />
-        </div>
+        <Footer footer={dict.footer} nav={dict.nav} locale={locale} />
       </div>
     </>
   );

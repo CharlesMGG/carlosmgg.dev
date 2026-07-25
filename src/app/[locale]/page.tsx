@@ -301,7 +301,7 @@ export default async function HomePage({
             </p>
           </Reveal>
 
-          <div className="absolute inset-x-0 bottom-[clamp(20px,4vh,36px)] px-[clamp(24px,7vw,120px)]">
+          <div className="absolute inset-x-0 bottom-0">
             <Footer footer={dict.footer} nav={dict.nav} locale={locale} />
           </div>
         </section>

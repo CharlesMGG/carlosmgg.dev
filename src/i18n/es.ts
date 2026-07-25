@@ -45,6 +45,7 @@ export const es: Dictionary = {
     wentWrong: "Qué salió mal",
     screens: "CAPTURAS",
     descent: "EL DESCENSO",
+    visit: "Visitar el sitio",
     screenshotsSoon: "Capturas con datos de demostración — en preparación.",
   },
   notes: {

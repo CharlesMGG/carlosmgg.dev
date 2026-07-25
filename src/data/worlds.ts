@@ -50,6 +50,8 @@ export type World = {
   /** Chips de stack del slide (handoff: pill glass bajo el párrafo) */
   chips: string[];
   stats: WorldStat[];
+  /** Sitio público del proyecto — solo los que se pueden visitar */
+  liveUrl?: string;
   study?: WorldStudy;
 };
 
@@ -480,6 +482,7 @@ export const worlds: World[] = [
     slug: "producto-de-venta",
     jewel: "rose",
     origin: "Comercial Alvin",
+    liveUrl: "https://new.comercialalvin.com",
     title: {
       es: "Producto de cara a venta",
       en: "Sales-facing product",
@@ -616,24 +619,6 @@ export const worlds: World[] = [
           alt: {
             es: "Catálogo con filtros por categoría y tarjetas de producto con ilustraciones propias y especificaciones",
             en: "Catalog with category filters and product cards featuring original illustrations and specs",
-          },
-        },
-        {
-          src: "/screens/producto-de-venta/alvin-cotizador.png",
-          width: 1440,
-          height: 900,
-          alt: {
-            es: "Drawer del cotizador: productos con cantidades, formulario de contacto y resumen antes de solicitar",
-            en: "Quote drawer: products with quantities, contact form and summary before submitting",
-          },
-        },
-        {
-          src: "/screens/producto-de-venta/alvin-mobile-hero.png",
-          width: 390,
-          height: 844,
-          alt: {
-            es: "Versión móvil de la landing",
-            en: "Mobile version of the landing page",
           },
         },
       ],

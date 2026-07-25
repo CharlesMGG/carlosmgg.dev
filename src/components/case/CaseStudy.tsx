@@ -69,8 +69,8 @@ export function CaseStudy({
         )}
       </div>
 
-      {/* Chips de stack */}
-      <div className="mt-8 flex flex-wrap gap-2">
+      {/* Chips de stack + enlace al sitio en vivo */}
+      <div className="mt-8 flex flex-wrap items-center gap-2">
         {world.chips.map((chip) => (
           <span
             key={chip}
@@ -83,6 +83,20 @@ export function CaseStudy({
             {chip}
           </span>
         ))}
+        {world.liveUrl && (
+          <a
+            href={world.liveUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ml-1 inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-display text-[12px] font-bold tracking-[0.08em] text-gold transition-colors hover:text-gold-soft"
+            style={{
+              background: "rgba(232,199,122,0.1)",
+              border: "1px solid rgba(232,199,122,0.45)",
+            }}
+          >
+            {dict.study.visit} ↗
+          </a>
+        )}
       </div>
 
       {/* CAPTURAS */}

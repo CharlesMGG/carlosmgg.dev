@@ -42,6 +42,7 @@ export type Dictionary = {
     wentWrong: string;
     screens: string;
     descent: string;
+    visit: string;
     screenshotsSoon: string;
   };
   notes: {
