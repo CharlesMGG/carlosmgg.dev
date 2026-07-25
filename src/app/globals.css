@@ -250,6 +250,11 @@ body.kh-cursor [role="button"] {
   text-shadow: 0 0 55px rgb(232 199 122 / 0.6);
 }
 
+/* Entrada del overlay de case study */
+.case-in {
+  animation: case-in 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
+}
+
 .star-fall {
   animation: star-fall 3.4s cubic-bezier(0.4, 0, 0.1, 1) 0.4s both;
 }

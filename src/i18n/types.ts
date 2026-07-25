@@ -41,6 +41,7 @@ export type Dictionary = {
     because: string;
     wentWrong: string;
     screens: string;
+    descent: string;
     screenshotsSoon: string;
   };
   notes: {

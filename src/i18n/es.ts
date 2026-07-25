@@ -43,7 +43,8 @@ export const es: Dictionary = {
     alternative: "Alternativa descartada",
     because: "Por qué",
     wentWrong: "Qué salió mal",
-    screens: "En pantalla",
+    screens: "CAPTURAS",
+    descent: "EL DESCENSO",
     screenshotsSoon: "Capturas con datos de demostración — en preparación.",
   },
   notes: {

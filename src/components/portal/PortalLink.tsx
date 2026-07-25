@@ -57,6 +57,7 @@ export function PortalLink({
   useEffect(() => {
     if (!warp) return;
     if (warp.phase === "expand") {
+      // Dos frames para que el navegador registre clip-path 0 antes de crecer
       const raf = requestAnimationFrame(() =>
         requestAnimationFrame(() =>
           setWarp((w) => (w ? { ...w, phase: "full" } : w)),
@@ -65,9 +66,19 @@ export function PortalLink({
       return () => cancelAnimationFrame(raf);
     }
     if (warp.phase === "full") {
-      const timer = setTimeout(() => router.push(href), WARP_MS);
-      return () => clearTimeout(timer);
+      // Al cubrir la pantalla navega; luego el velo se desvanece y se retira
+      const toCase = setTimeout(() => router.push(href), WARP_MS);
+      const toFade = setTimeout(
+        () => setWarp((w) => (w ? { ...w, phase: "fade" } : w)),
+        WARP_MS + 90,
+      );
+      return () => {
+        clearTimeout(toCase);
+        clearTimeout(toFade);
+      };
     }
+    const clear = setTimeout(() => setWarp(null), 580);
+    return () => clearTimeout(clear);
   }, [warp, href, router]);
 
   const clip =
@@ -88,7 +99,9 @@ export function PortalLink({
             style={{
               background: `radial-gradient(circle at ${warp.x}px ${warp.y}px, ${to}, ${from} 60%, #060b1a 150%)`,
               clipPath: clip,
-              transition: "clip-path .55s cubic-bezier(.6,0,.2,1)",
+              opacity: warp.phase === "fade" ? 0 : 1,
+              transition:
+                "clip-path .55s cubic-bezier(.6,0,.2,1), opacity .42s ease",
             }}
           />,
           document.body,

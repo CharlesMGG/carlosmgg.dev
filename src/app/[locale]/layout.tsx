@@ -3,7 +3,6 @@ import { Chakra_Petch, Inter, IBM_Plex_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next";
 import { locales, isLocale, getDictionary, type Locale } from "@/i18n";
-import { CommandMenu } from "@/components/chrome/CommandMenu";
 import { TopBar } from "@/components/chrome/TopBar";
 import { CursorGlow } from "@/components/chrome/CursorGlow";
 import { SITE } from "@/data/site";
@@ -63,9 +62,12 @@ export const viewport: Viewport = {
 
 export default async function LocaleLayout({
   children,
+  modal,
   params,
 }: {
   children: React.ReactNode;
+  /** Slot paralelo del overlay de case study (ruta interceptora) */
+  modal: React.ReactNode;
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
@@ -105,7 +107,7 @@ export default async function LocaleLayout({
         <CursorGlow />
         <TopBar current={locale} soundLabel={dict.common.sound} />
         <main id="main">{children}</main>
-        <CommandMenu locale={locale} nav={dict.nav} />
+        {modal}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

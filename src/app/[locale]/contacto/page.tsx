@@ -81,7 +81,7 @@ export default async function ContactPage({
       </div>
     </div>
     <div className="pb-16 md:pb-0">
-      <Footer footer={dict.footer} />
+      <Footer footer={dict.footer} nav={dict.nav} locale={locale} />
     </div>
     </>
   );
