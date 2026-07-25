@@ -1,154 +1,161 @@
-import { JEWELS, type Jewel } from "@/data/worlds";
+import type { ReactNode } from "react";
 
 /**
- * El vitral: círculo de cristal emplomado construido en SVG puro.
- * Lenguaje visual original que evoca la estación del despertar —
- * cero activos del juego. La refracción viene de feTurbulence +
- * feDisplacementMap; el plomo es el trazo dorado.
+ * Vitral — rosetón de cristal emplomado en SVG puro. Puerto fiel del
+ * buildVitral() del handoff de diseño: anillos de cuñas, pétalos ojivales,
+ * radios dorados, banda de borde con coronas y diamantes, y hub central.
+ * Lenguaje original que evoca la estación del despertar — cero activos del
+ * juego. viewBox 0 0 500 500.
  */
 
-const CX = 200;
-const CY = 200;
+const JEWELS = ["#1E3A8A", "#7C3AED", "#0EA5A4", "#C026D3", "#3B6BE8"];
+const CX = 250;
+const CY = 250;
 
-function polar(r: number, angle: number): [number, number] {
-  return [CX + r * Math.cos(angle), CY + r * Math.sin(angle)];
+function p(r: number, a: number): [string, string] {
+  return [(CX + r * Math.cos(a)).toFixed(2), (CY + r * Math.sin(a)).toFixed(2)];
 }
-
-/** Sector anular (gajo de vitral) entre radios r0..r1 y ángulos a0..a1 */
-function wedge(r0: number, r1: number, a0: number, a1: number): string {
-  const [x0, y0] = polar(r0, a0);
-  const [x1, y1] = polar(r1, a0);
-  const [x2, y2] = polar(r1, a1);
-  const [x3, y3] = polar(r0, a1);
-  const large = a1 - a0 > Math.PI ? 1 : 0;
-  return [
-    `M${x0.toFixed(2)} ${y0.toFixed(2)}`,
-    `L${x1.toFixed(2)} ${y1.toFixed(2)}`,
-    `A${r1} ${r1} 0 ${large} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`,
-    `L${x3.toFixed(2)} ${y3.toFixed(2)}`,
-    `A${r0} ${r0} 0 ${large} 0 ${x0.toFixed(2)} ${y0.toFixed(2)}`,
-    "Z",
-  ].join(" ");
-}
-
-const INNER_JEWELS: Jewel[] = [
-  "sapphire",
-  "amethyst",
-  "tide",
-  "rose",
-  "sapphire",
-  "gold",
-  "amethyst",
-  "tide",
-  "rose",
-  "amethyst",
-];
-
-const OUTER_COUNT = 14;
 
 export function Vitral({ className }: { className?: string }) {
-  const innerStep = (Math.PI * 2) / INNER_JEWELS.length;
-  const outerStep = (Math.PI * 2) / OUTER_COUNT;
-  const tilt = -Math.PI / 2;
+  const els: ReactNode[] = [];
+
+  // Anillos de cuñas: interior [62–114]×12, medio [114–164]×18
+  ([
+    [62, 114, 12],
+    [114, 164, 18],
+  ] as const).forEach(([ir, or, n], ri) => {
+    for (let i = 0; i < n; i++) {
+      const a0 = (i / n) * Math.PI * 2 - Math.PI / 2;
+      const a1 = ((i + 1) / n) * Math.PI * 2 - Math.PI / 2;
+      const A = p(or, a0);
+      const B = p(or, a1);
+      const C = p(ir, a1);
+      const D = p(ir, a0);
+      const d = `M${A} A${or} ${or} 0 0 1 ${B} L${C} A${ir} ${ir} 0 0 0 ${D} Z`;
+      els.push(
+        <path
+          key={`w${ri}-${i}`}
+          d={d}
+          fill={JEWELS[(i + ri * 2) % JEWELS.length]}
+          fillOpacity={0.55 + 0.16 * ((i + ri) % 2)}
+          stroke="#E8C77A"
+          strokeOpacity={0.28}
+          strokeWidth={1}
+          strokeLinejoin="round"
+        />,
+      );
+    }
+  });
+
+  // Anillo de pétalos ojivales [164–206]×16
+  {
+    const pir = 164;
+    const por = 206;
+    const pn = 16;
+    for (let i = 0; i < pn; i++) {
+      const a0 = (i / pn) * Math.PI * 2 - Math.PI / 2;
+      const a1 = ((i + 1) / pn) * Math.PI * 2 - Math.PI / 2;
+      const mid = (a0 + a1) / 2;
+      const base = p(pir, mid);
+      const tip = p(por, mid);
+      const l = p((pir + por) / 2, a0 + 0.03);
+      const r = p((pir + por) / 2, a1 - 0.03);
+      els.push(
+        <path
+          key={`p${i}`}
+          d={`M${base} Q${l} ${tip} Q${r} ${base} Z`}
+          fill={JEWELS[i % JEWELS.length]}
+          fillOpacity={0.82}
+          stroke="#E8C77A"
+          strokeOpacity={0.45}
+          strokeWidth={1.2}
+          strokeLinejoin="round"
+        />,
+      );
+    }
+  }
+
+  // 12 radios dorados
+  for (let i = 0; i < 12; i++) {
+    const a = (i / 12) * Math.PI * 2 - Math.PI / 2;
+    const s = p(60, a);
+    const e = p(208, a);
+    els.push(
+      <line
+        key={`s${i}`}
+        x1={s[0]}
+        y1={s[1]}
+        x2={e[0]}
+        y2={e[1]}
+        stroke="#E8C77A"
+        strokeOpacity={0.2}
+        strokeWidth={1}
+      />,
+    );
+  }
+
+  // Banda de borde
+  els.push(<circle key="ob1" cx={CX} cy={CY} r={208} fill="none" stroke="#E8C77A" strokeOpacity={0.5} strokeWidth={2} />);
+  els.push(<circle key="ob2" cx={CX} cy={CY} r={238} fill="none" stroke="#E8C77A" strokeOpacity={0.75} strokeWidth={3} />);
+  els.push(<circle key="ob3" cx={CX} cy={CY} r={244} fill="none" stroke="#E8C77A" strokeOpacity={0.3} strokeWidth={1} />);
+
+  // 8 coronas alternando con 8 diamantes en r223
+  {
+    const on = 8;
+    const orr = 223;
+    for (let i = 0; i < on; i++) {
+      const a = (i / on) * Math.PI * 2 - Math.PI / 2;
+      const pt = p(orr, a);
+      const deg = (a * 180) / Math.PI + 90;
+      els.push(
+        <g key={`cr${i}`} transform={`translate(${pt[0]} ${pt[1]}) rotate(${deg}) scale(1.7)`}>
+          <path
+            d="M-10 5 L-10 -2 L-5 2.5 L0 -6 L5 2.5 L10 -2 L10 5 Z"
+            fill="#E8C77A"
+            stroke="#8A6D2E"
+            strokeWidth={0.8}
+            strokeLinejoin="round"
+          />
+          <circle cx={-10} cy={-3} r={1.5} fill="#F6E3A6" />
+          <circle cx={0} cy={-7} r={1.9} fill="#F6E3A6" />
+          <circle cx={10} cy={-3} r={1.5} fill="#F6E3A6" />
+        </g>,
+      );
+      const a2 = ((i + 0.5) / on) * Math.PI * 2 - Math.PI / 2;
+      const p2 = p(orr, a2);
+      const d2 = (a2 * 180) / Math.PI + 45;
+      els.push(
+        <rect
+          key={`dm${i}`}
+          x={Number(p2[0]) - 6.5}
+          y={Number(p2[1]) - 6.5}
+          width={13}
+          height={13}
+          rx={1.5}
+          fill={JEWELS[i % JEWELS.length]}
+          stroke="#E8C77A"
+          strokeWidth={1.1}
+          transform={`rotate(${d2} ${p2[0]} ${p2[1]})`}
+        />,
+      );
+    }
+  }
+
+  // Hub central (el medallón estático lo cubre encima)
+  els.push(<circle key="h1" cx={CX} cy={CY} r={60} fill="#0A1024" stroke="#E8C77A" strokeWidth={2} />);
+  els.push(<circle key="h2" cx={CX} cy={CY} r={60} fill="none" stroke="rgb(232 199 122 / 0.35)" strokeWidth={8} />);
 
   return (
-    <svg
-      viewBox="0 0 400 400"
-      className={className}
-      role="img"
-      aria-hidden
-      focusable="false"
-    >
+    <svg viewBox="0 0 500 500" className={className} aria-hidden focusable="false" style={{ display: "block" }}>
       <defs>
-        {(Object.keys(JEWELS) as Jewel[]).map((jewel) => (
-          <radialGradient key={jewel} id={`vg-${jewel}`} cx="38%" cy="32%" r="80%">
-            <stop offset="0%" stopColor={JEWELS[jewel].to} />
-            <stop offset="100%" stopColor={JEWELS[jewel].from} />
-          </radialGradient>
-        ))}
-        <radialGradient id="vg-night" cx="40%" cy="35%" r="85%">
-          <stop offset="0%" stopColor="#25346e" />
-          <stop offset="100%" stopColor="#0e1633" />
+        <radialGradient id="vglow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#16244c" />
+          <stop offset="68%" stopColor="#0A1024" />
+          <stop offset="100%" stopColor="#060B1A" />
         </radialGradient>
-        <radialGradient id="vg-shine" cx="32%" cy="26%" r="60%">
-          <stop offset="0%" stopColor="rgb(242 244 248 / 0.28)" />
-          <stop offset="100%" stopColor="rgb(242 244 248 / 0)" />
-        </radialGradient>
-        <filter id="vitral-glass" x="-5%" y="-5%" width="110%" height="110%">
-          <feTurbulence
-            type="fractalNoise"
-            baseFrequency="0.012 0.02"
-            numOctaves="2"
-            seed="7"
-            result="noise"
-          />
-          <feDisplacementMap in="SourceGraphic" in2="noise" scale="5" />
-        </filter>
       </defs>
-
-      {/* Cama del vitral */}
-      <circle cx={CX} cy={CY} r={192} fill="#060b1a" />
-
-      <g filter="url(#vitral-glass)">
-        {/* Banda exterior: cristal nocturno con destellos de joya */}
-        {Array.from({ length: OUTER_COUNT }, (_, i) => {
-          const a0 = tilt + i * outerStep;
-          const a1 = tilt + (i + 1) * outerStep;
-          const jewelAccent = i % 4 === 1;
-          const fill = jewelAccent
-            ? `url(#vg-${INNER_JEWELS[i % INNER_JEWELS.length]})`
-            : "url(#vg-night)";
-          return (
-            <path
-              key={`outer-${i}`}
-              d={wedge(152, 186, a0, a1)}
-              fill={fill}
-              opacity={jewelAccent ? 0.75 : 0.95}
-              stroke="rgb(232 199 122 / 0.45)"
-              strokeWidth="1.4"
-            />
-          );
-        })}
-
-        {/* Banda interior: los gajos de joya */}
-        {INNER_JEWELS.map((jewel, i) => {
-          const a0 = tilt + i * innerStep;
-          const a1 = tilt + (i + 1) * innerStep;
-          return (
-            <path
-              key={`inner-${i}`}
-              d={wedge(66, 148, a0, a1)}
-              fill={`url(#vg-${jewel})`}
-              opacity={0.9}
-              stroke="rgb(232 199 122 / 0.5)"
-              strokeWidth="1.6"
-            />
-          );
-        })}
-      </g>
-
-      {/* Medallón central — aquí va el retrato */}
-      <circle cx={CX} cy={CY} r={62} fill="url(#vg-night)" />
-      <text
-        x={CX}
-        y={CY + 12}
-        textAnchor="middle"
-        fill="#e8c77a"
-        style={{
-          font: "700 34px var(--font-round), sans-serif",
-          letterSpacing: "0.08em",
-        }}
-      >
-        CG
-      </text>
-
-      {/* Plomo: anillos dorados */}
-      <circle cx={CX} cy={CY} r={190} fill="none" stroke="#e8c77a" strokeWidth="3" opacity={0.85} />
-      <circle cx={CX} cy={CY} r={150} fill="none" stroke="rgb(232 199 122 / 0.6)" strokeWidth="2" />
-      <circle cx={CX} cy={CY} r={64} fill="none" stroke="#e8c77a" strokeWidth="2.5" opacity={0.9} />
-
-      {/* Brillo de cristal */}
-      <circle cx={CX} cy={CY} r={190} fill="url(#vg-shine)" />
+      <circle cx={CX} cy={CY} r={244} fill="url(#vglow)" />
+      {els}
     </svg>
   );
 }

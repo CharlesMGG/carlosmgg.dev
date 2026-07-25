@@ -47,17 +47,19 @@ export type World = {
   origin: string;
   title: L<string>;
   tagline: L<string>;
+  /** Chips de stack del slide (handoff: pill glass bajo el párrafo) */
+  chips: string[];
   stats: WorldStat[];
   study?: WorldStudy;
 };
 
-/** Gradientes por joya — "un mundo, una paleta" (KH III) */
+/** Joya por mundo — hex y ring exactos del handoff de diseño */
 export const JEWELS: Record<Jewel, { from: string; to: string; glow: string }> = {
-  sapphire: { from: "#1e3a8a", to: "#3b6fd4", glow: "rgb(59 111 212 / 0.35)" },
-  tide: { from: "#0ea5a4", to: "#22d3ee", glow: "rgb(14 165 164 / 0.35)" },
-  amethyst: { from: "#7c3aed", to: "#a78bfa", glow: "rgb(124 58 237 / 0.35)" },
-  rose: { from: "#c026d3", to: "#f472b6", glow: "rgb(192 38 211 / 0.32)" },
-  gold: { from: "#b98a2f", to: "#e8c77a", glow: "rgb(232 199 122 / 0.32)" },
+  sapphire: { from: "#3B6BE8", to: "#3B6BE8", glow: "rgba(59,107,232,0.45)" },
+  tide: { from: "#0EA5A4", to: "#0EA5A4", glow: "rgba(14,165,164,0.45)" },
+  amethyst: { from: "#7C3AED", to: "#7C3AED", glow: "rgba(124,58,237,0.45)" },
+  rose: { from: "#C026D3", to: "#C026D3", glow: "rgba(192,38,211,0.45)" },
+  gold: { from: "#E8C77A", to: "#E8C77A", glow: "rgba(232,199,122,0.5)" },
 };
 
 export const worlds: World[] = [
@@ -73,6 +75,7 @@ export const worlds: World[] = [
       es: "Una plataforma logística donde cada organización ve solo lo suyo — aislamiento garantizado por la base de datos, no por confianza.",
       en: "A logistics platform where every organization sees only its own data — isolation guaranteed by the database, not by trust.",
     },
+    chips: ["Next.js", "TypeScript", "PostgreSQL", "RLS", "Multi-tenant"],
     stats: [
       {
         value: { es: "0 hallazgos críticos", en: "0 critical findings" },
@@ -211,6 +214,7 @@ export const worlds: World[] = [
       es: "Escaneo, firma, GPS y evidencia fotográfica en manos de operadores reales — web móvil e iOS nativo.",
       en: "Scanning, signatures, GPS and photo evidence in the hands of real couriers — mobile web and native iOS.",
     },
+    chips: ["Swift / SwiftUI", "Web móvil", "Escaneo QR", "GPS", "Offline-safe"],
     stats: [
       {
         value: { es: "App Store", en: "App Store" },
@@ -351,6 +355,7 @@ export const worlds: World[] = [
       es: "Dinero que cuadra: ledger append-only, operaciones idempotentes y precios híbridos por tenant.",
       en: "Money that balances: append-only ledger, idempotent operations and hybrid per-tenant pricing.",
     },
+    chips: ["PL/pgSQL", "Ledger append-only", "Idempotencia", "SEPOMEX"],
     stats: [
       {
         value: { es: "157k códigos postales", en: "157k postal codes" },
@@ -483,6 +488,7 @@ export const worlds: World[] = [
       es: "Una landing con cotizador que convierte visitantes en solicitudes reales — construida para cerrar una venta.",
       en: "A landing page with a quote builder that turns visitors into real requests — built to close a sale.",
     },
+    chips: ["Next.js", "Tailwind v4", "Resend", "Cloudflare", "SEO"],
     stats: [
       {
         value: { es: "En producción", en: "In production" },
@@ -645,6 +651,7 @@ export const worlds: World[] = [
       es: "Cómo trabajo: sistema de identidad visual, decisiones documentadas y lecciones con causa raíz.",
       en: "How I work: a visual identity system, documented decisions and root-cause lessons.",
     },
+    chips: ["SVG", "Canvas 2D", "Figma", "Open source"],
     stats: [
       {
         value: { es: "7 activos SVG", en: "7 SVG assets" },

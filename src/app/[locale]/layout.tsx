@@ -1,20 +1,20 @@
 import type { Metadata, Viewport } from "next";
-import { M_PLUS_Rounded_1c, Inter, IBM_Plex_Mono } from "next/font/google";
+import { Chakra_Petch, Inter, IBM_Plex_Mono } from "next/font/google";
 import { notFound } from "next/navigation";
 import { Analytics } from "@vercel/analytics/next";
 import { locales, isLocale, getDictionary, type Locale } from "@/i18n";
 import { CommandMenu } from "@/components/chrome/CommandMenu";
-import { LocaleSwitch } from "@/components/chrome/LocaleSwitch";
-import { SoundToggle } from "@/components/chrome/SoundToggle";
+import { TopBar } from "@/components/chrome/TopBar";
 import { CursorGlow } from "@/components/chrome/CursorGlow";
 import { SITE } from "@/data/site";
 import "../globals.css";
 
-/* M PLUS Rounded: la sans redondeada estilo Rodin de los menús del juego */
-const round = M_PLUS_Rounded_1c({
+/* Chakra Petch: sans angular con itálicas, sabor de HUD de videojuego */
+const chakra = Chakra_Petch({
   subsets: ["latin"],
-  weight: ["500", "700", "800"],
-  variable: "--font-round",
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: "--font-chakra",
 });
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const plex = IBM_Plex_Mono({
@@ -93,7 +93,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${round.variable} ${inter.variable} ${plex.variable} antialiased`}
+      className={`${chakra.variable} ${inter.variable} ${plex.variable} antialiased`}
     >
       <body className="min-h-dvh">
         <a
@@ -103,8 +103,7 @@ export default async function LocaleLayout({
           {dict.common.skip}
         </a>
         <CursorGlow />
-        <LocaleSwitch current={locale} />
-        <SoundToggle label={dict.common.sound} />
+        <TopBar current={locale} soundLabel={dict.common.sound} />
         <main id="main">{children}</main>
         <CommandMenu locale={locale} nav={dict.nav} />
         <script

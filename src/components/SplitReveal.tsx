@@ -12,23 +12,29 @@ export function SplitReveal({
   className,
   as: Tag = "h2",
   delay = 0,
+  style,
 }: {
   text: string;
   className?: string;
   as?: "h1" | "h2" | "p" | "span";
   delay?: number;
+  style?: React.CSSProperties;
 }) {
   const reduced = useReducedMotion();
 
   if (reduced) {
-    return <Tag className={className}>{text}</Tag>;
+    return (
+      <Tag className={className} style={style}>
+        {text}
+      </Tag>
+    );
   }
 
   const words = text.split(" ");
   let letterIndex = 0;
 
   return (
-    <Tag className={className} aria-label={text}>
+    <Tag className={className} style={style} aria-label={text}>
       {words.map((word, wi) => (
         <span
           key={`${word}-${wi}`}

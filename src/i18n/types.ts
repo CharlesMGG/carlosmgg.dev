@@ -12,9 +12,11 @@ export type Dictionary = {
   hero: {
     eyebrow: string;
     headline: string;
+    tagline: string;
     sub: string;
     availability: string;
     cta: string;
+    name: string;
     firstName: string;
     lastName: string;
     portfolioWord: string;
@@ -46,9 +48,28 @@ export type Dictionary = {
     sub: string;
     read: string;
   };
+  about: {
+    kicker: string;
+    title: string;
+    body: string[];
+    facts: { k: string; v: string }[];
+  };
+  social: {
+    kicker: string;
+    handle: string;
+    url: string;
+  };
+  rail: {
+    hero: string;
+    about: string;
+    contact: string;
+  };
   contact: {
     title: string;
     sub: string;
+    kicker: string;
+    bigTitle: string;
+    body: string;
     emailLabel: string;
     cv: string;
     form: {

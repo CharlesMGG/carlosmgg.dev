@@ -3,8 +3,10 @@
 import { useEffect, useState } from "react";
 
 /**
- * Riel lateral de navegación entre slides (estilo fullpage):
- * una raya por sección, la activa se estira y se pinta de oro.
+ * Rail derecho del handoff: punto + label por sección. El activo se pone
+ * dorado con glow y su label aparece; clic hace scroll suave dentro del
+ * scroller. Solo las secciones con [data-section] cuentan (Instagram queda
+ * fuera del rail a propósito).
  */
 export function SectionRail({
   ids,
@@ -17,52 +19,73 @@ export function SectionRail({
 
   useEffect(() => {
     const container = document.getElementById("snap-container");
-    const sections = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => el !== null);
+    if (!container) return;
+    const sections = Array.from(
+      container.querySelectorAll<HTMLElement>("[data-section]"),
+    );
     if (!sections.length) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            const index = ids.indexOf(entry.target.id);
+            const index = sections.indexOf(entry.target as HTMLElement);
             if (index >= 0) setActive(index);
           }
         }
       },
-      { root: container, threshold: 0.6 },
+      { root: container, threshold: 0.55 },
     );
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
-  }, [ids]);
+  }, []);
+
+  const scrollTo = (id: string) => {
+    const container = document.getElementById("snap-container");
+    const el = document.getElementById(id);
+    if (!container || !el) return;
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    container.scrollTo({ top: el.offsetTop, behavior: reduced ? "auto" : "smooth" });
+  };
 
   return (
     <nav
       aria-label="Secciones"
-      className="fixed left-5 top-1/2 z-40 hidden -translate-y-1/2 md:block"
+      className="fixed right-[clamp(16px,3vw,40px)] top-1/2 z-[60] hidden -translate-y-1/2 flex-col items-end gap-[18px] md:flex"
     >
-      <ul className="flex flex-col gap-3">
-        {ids.map((id, i) => (
-          <li key={id}>
-            <a
-              href={`#${id}`}
-              aria-label={labels[i]}
-              aria-current={active === i ? "true" : undefined}
-              className="group flex h-3 items-center"
+      {ids.map((id, i) => {
+        const isActive = active === i;
+        return (
+          <button
+            key={id}
+            type="button"
+            onClick={() => scrollTo(id)}
+            aria-current={isActive ? "true" : undefined}
+            className="flex items-center gap-2.5 font-display text-[10px] tracking-[0.2em]"
+          >
+            <span
+              className={`transition-all duration-300 ${
+                isActive
+                  ? "translate-x-0 text-gold opacity-100"
+                  : "translate-x-2 text-mist opacity-0"
+              }`}
             >
-              <span
-                aria-hidden
-                className={`block h-0.5 rounded-full transition-all duration-300 ${
-                  active === i
-                    ? "w-8 bg-gold"
-                    : "w-4 bg-mist/40 group-hover:bg-mist"
-                }`}
-              />
-            </a>
-          </li>
-        ))}
-      </ul>
+              {labels[i]}
+            </span>
+            <span
+              aria-hidden
+              className={`rounded-full transition-all duration-300 ${
+                isActive ? "h-2.5 w-2.5" : "h-[7px] w-[7px]"
+              }`}
+              style={
+                isActive
+                  ? { background: "#E8C77A", boxShadow: "0 0 12px #E8C77A" }
+                  : { background: "rgba(150,161,188,0.5)" }
+              }
+            />
+          </button>
+        );
+      })}
     </nav>
   );
 }

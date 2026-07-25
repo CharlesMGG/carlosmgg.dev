@@ -15,6 +15,10 @@ export function CommandMenu({ locale, nav }: Props) {
   const pathname = usePathname();
   const base = `/${locale}`;
 
+  // El home del handoff no lleva menú de comandos — ahí navega el rail
+  // lateral. En subpáginas sí, para poder volver y moverse entre ellas.
+  if (pathname === base || pathname === `${base}/`) return null;
+
   const items = [
     { href: base, label: nav.map, exact: true },
     { href: `${base}/notas`, label: nav.notes, exact: false },
