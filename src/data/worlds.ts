@@ -548,20 +548,20 @@ export const worlds: World[] = [
       decisions: [
         {
           title: {
-            es: "Ilustraciones propias en vez de fotos",
-            en: "Original illustrations instead of photos",
+            es: "Iconos propios para el producto; la foto, solo de ambiente",
+            en: "Original icons for product; photography only for atmosphere",
           },
           choice: {
-            es: "Catálogo completo con ilustraciones SVG line-art dibujadas para el proyecto.",
-            en: "A full catalog of SVG line-art illustrations drawn for the project.",
+            es: "Los 21 modelos del catálogo se dibujaron como iconos de línea, uno por producto. La fotografía se reserva para las bandas de ambiente — bodega, andén, tarima.",
+            en: "The catalog's 21 models were drawn as line icons, one per product. Photography is reserved for the atmosphere bands — warehouse, dock, pallet.",
           },
           alternative: {
-            es: "Fotos oficiales de producto o banco de imágenes.",
-            en: "Official product photos or stock imagery.",
+            es: "Fotos oficiales de producto, una por marca.",
+            en: "Official product photos, one per brand.",
           },
           reason: {
-            es: "Las fotos oficiales traen riesgo legal y el stock huele a plantilla. El line-art es coherente, pesa casi nada y de paso demuestra el sistema visual.",
-            en: "Official photos carry legal risk and stock smells like a template. Line-art is coherent, weighs almost nothing, and doubles as proof of the visual system.",
+            es: "La foto oficial de cada marca trae riesgo de licencia y, peor, promociona una marca sobre otra dentro de un catálogo que se vende como neutral. El icono nivela a los 21 modelos, pesa casi nada y sostiene el sistema visual. La foto de ambiente es de banco y provisional: se sustituye por material propio de bodega antes de abrir el sitio al público.",
+            en: "Each brand's official photo carries licensing risk and, worse, promotes one brand over another inside a catalog sold as neutral. Icons level all 21 models, weigh almost nothing, and hold the visual system together. The atmosphere photography is stock and provisional: it gets replaced with the client's own warehouse material before the site opens to the public.",
           },
         },
         {
