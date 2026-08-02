@@ -52,6 +52,8 @@ export type World = {
   stats: WorldStat[];
   /** Sitio público del proyecto — solo los que se pueden visitar */
   liveUrl?: string;
+  /** Captura para la tarjeta del sitio en vivo; se muestra solo si hay liveUrl */
+  livePreview?: WorldScreen;
   study?: WorldStudy;
 };
 
@@ -69,6 +71,16 @@ export const worlds: World[] = [
     slug: "saas-multi-tenant",
     jewel: "sapphire",
     origin: "EFA Solutions",
+    liveUrl: "https://efasolutions.mx",
+    livePreview: {
+      src: "/screens/saas-multi-tenant/efa-hero.jpg",
+      width: 1440,
+      height: 900,
+      alt: {
+        es: "Portada de efasolutions.mx: 'Guías propias. Entregas con evidencia.' con una guía de envío y la línea de tiempo de rastreo",
+        en: "efasolutions.mx home: 'Our own waybills. Deliveries with evidence.' with a shipping label and the tracking timeline",
+      },
+    },
     title: {
       es: "SaaS multi-tenant white-label",
       en: "White-label multi-tenant SaaS",
@@ -483,6 +495,15 @@ export const worlds: World[] = [
     jewel: "rose",
     origin: "Comercial Alvin",
     liveUrl: "https://new.comercialalvin.com",
+    livePreview: {
+      src: "/screens/producto-de-venta/alvin-hero.jpg",
+      width: 1440,
+      height: 900,
+      alt: {
+        es: "Portada de new.comercialalvin.com: 'Surte tu piso' en serif a pantalla completa sobre una foto de bodega",
+        en: "new.comercialalvin.com home: 'Surte tu piso' in full-screen serif over a warehouse photo",
+      },
+    },
     title: {
       es: "Producto de cara a venta",
       en: "Sales-facing product",
@@ -604,12 +625,12 @@ export const worlds: World[] = [
       ],
       screens: [
         {
-          src: "/screens/producto-de-venta/alvin-hero.png",
+          src: "/screens/producto-de-venta/alvin-cotizador.jpg",
           width: 1440,
           height: 900,
           alt: {
-            es: "Hero de la landing: 'Línea blanca al mayoreo, sin intermediarios' sobre fondo oscuro con ilustración line-art de un refrigerador",
-            en: "Landing hero: wholesale white goods headline on a dark background with a line-art refrigerator illustration",
+            es: "Cajón de cotización abierto con tres modelos de distintas categorías, el contador de la lista y el formulario de contacto",
+            en: "Open quote drawer with three models from different categories, the list counter and the contact form",
           },
         },
         {
@@ -617,8 +638,8 @@ export const worlds: World[] = [
           width: 1440,
           height: 900,
           alt: {
-            es: "Catálogo con filtros por categoría y tarjetas de producto con ilustraciones propias y especificaciones",
-            en: "Catalog with category filters and product cards featuring original illustrations and specs",
+            es: "Catálogo con chips de filtro por categoría y tarjetas de producto con iconos de línea propios y especificaciones",
+            en: "Catalog with category filter chips and product cards featuring original line icons and specs",
           },
         },
       ],

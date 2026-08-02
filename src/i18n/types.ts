@@ -43,6 +43,7 @@ export type Dictionary = {
     screens: string;
     descent: string;
     visit: string;
+    live: string;
     screenshotsSoon: string;
   };
   notes: {

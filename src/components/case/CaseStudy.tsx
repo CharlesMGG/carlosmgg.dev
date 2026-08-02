@@ -2,6 +2,7 @@ import Image from "next/image";
 import type { Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/types";
 import { JEWELS, type World } from "@/data/worlds";
+import { LiveSiteCard } from "./LiveSiteCard";
 
 /**
  * Cuerpo del case study — mismo markup para la ruta completa y el overlay.
@@ -98,6 +99,16 @@ export function CaseStudy({
           </a>
         )}
       </div>
+
+      {/* SITIO EN VIVO */}
+      {world.liveUrl && world.livePreview && (
+        <div className="mt-11">
+          <div className="mb-5 font-display text-[12px] tracking-[0.24em] text-gold">
+            {dict.study.live}
+          </div>
+          <LiveSiteCard world={world} locale={locale} cta={dict.study.visit} />
+        </div>
+      )}
 
       {/* CAPTURAS */}
       {study?.screens && study.screens.length > 0 && (

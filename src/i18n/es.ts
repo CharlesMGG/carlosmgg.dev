@@ -46,6 +46,7 @@ export const es: Dictionary = {
     screens: "CAPTURAS",
     descent: "EL DESCENSO",
     visit: "Visitar el sitio",
+    live: "SITIO EN VIVO",
     screenshotsSoon: "Capturas con datos de demostración — en preparación.",
   },
   notes: {
