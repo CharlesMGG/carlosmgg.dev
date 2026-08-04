@@ -43,7 +43,7 @@ export default async function ContactPage({
           <div className="mx-auto max-w-[920px]">
             <Link
               href={`/${locale}`}
-              className="font-display text-[12px] tracking-[0.18em] text-mist transition-colors hover:text-gold"
+              className="inline-block py-1 font-display text-[12px] tracking-[0.18em] text-mist transition-colors hover:text-gold"
             >
               ← {dict.worlds.back}
             </Link>
@@ -73,11 +73,11 @@ export default async function ContactPage({
               >
                 {SITE.email}
               </a>
-              <p className="mt-7 flex flex-wrap gap-x-6 gap-y-3 font-display text-[13px] tracking-[0.08em]">
+              <p className="mt-7 flex flex-wrap items-center gap-x-6 gap-y-1 font-display text-[13px] tracking-[0.08em]">
                 <a
                   href="/cv/carlos-garcia-cv.pdf"
                   download
-                  className="text-gold transition-colors hover:text-gold-soft"
+                  className="py-1 text-gold transition-colors hover:text-gold-soft"
                 >
                   ↓ {dict.contact.cv}
                 </a>
@@ -85,7 +85,7 @@ export default async function ContactPage({
                   href={SITE.github}
                   rel="noopener noreferrer"
                   target="_blank"
-                  className="text-mist transition-colors hover:text-gold"
+                  className="py-1 text-mist transition-colors hover:text-gold"
                 >
                   GitHub
                 </a>
@@ -93,7 +93,7 @@ export default async function ContactPage({
                   href={SITE.linkedin}
                   rel="noopener noreferrer"
                   target="_blank"
-                  className="text-mist transition-colors hover:text-gold"
+                  className="py-1 text-mist transition-colors hover:text-gold"
                 >
                   LinkedIn
                 </a>

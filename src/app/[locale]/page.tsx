@@ -294,7 +294,7 @@ export default async function HomePage({
               <a
                 href="/cv/carlos-garcia-cv.pdf"
                 download
-                className="font-display text-[13px] tracking-[0.1em] text-mist underline decoration-gold/40 underline-offset-4 transition-colors hover:text-gold"
+                className="inline-block py-1 font-display text-[13px] tracking-[0.1em] text-mist underline decoration-gold/40 underline-offset-4 transition-colors hover:text-gold"
               >
                 ↓ {dict.contact.cv}
               </a>

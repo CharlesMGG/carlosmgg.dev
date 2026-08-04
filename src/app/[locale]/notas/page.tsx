@@ -34,7 +34,7 @@ export default async function NotesPage({
           <div className="mx-auto max-w-[920px]">
             <Link
               href={`/${locale}`}
-              className="font-display text-[12px] tracking-[0.18em] text-mist transition-colors hover:text-gold"
+              className="inline-block py-1 font-display text-[12px] tracking-[0.18em] text-mist transition-colors hover:text-gold"
             >
               ← {dict.worlds.back}
             </Link>

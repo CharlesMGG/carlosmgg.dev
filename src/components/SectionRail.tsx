@@ -51,7 +51,7 @@ export function SectionRail({
   return (
     <nav
       aria-label="Secciones"
-      className="fixed right-[clamp(16px,3vw,40px)] top-1/2 z-[60] hidden -translate-y-1/2 flex-col items-end gap-[18px] md:flex"
+      className="fixed right-[clamp(16px,3vw,40px)] top-1/2 z-[60] hidden -translate-y-1/2 flex-col items-end gap-2 md:flex"
     >
       {ids.map((id, i) => {
         const isActive = active === i;
@@ -61,7 +61,10 @@ export function SectionRail({
             type="button"
             onClick={() => scrollTo(id)}
             aria-current={isActive ? "true" : undefined}
-            className="flex items-center gap-2.5 font-display text-[10px] tracking-[0.2em]"
+            // py-[5px] lleva el área de clic de 15px a 25px (mínimo 24 de WCAG
+            // 2.5.8) sin mover nada: el gap del nav baja de 18px a 8px, así que
+            // el ritmo visual entre puntos sigue siendo el mismo de 33px.
+            className="flex items-center gap-2.5 py-[5px] font-display text-[10px] tracking-[0.2em]"
           >
             <span
               className={`transition-all duration-300 ${
